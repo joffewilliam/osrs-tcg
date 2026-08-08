@@ -913,7 +913,7 @@
     .viewport:hover .foil-card,
     .viewport.is-dragging .foil-card {
       transition: transform 60ms linear, box-shadow 80ms linear;
-      box-shadow: calc(var(--ry) / 1deg * -1px) calc(var(--rx) / 1deg * 1px + 20px) 34px rgba(0,0,0,.52);
+      box-shadow: 0 18px 24px rgba(0,0,0,.48), 0 3px 5px rgba(0,0,0,.55);
     }
 
     .foil-card:focus-visible { outline: 3px solid #e6c96f; outline-offset: 4px; }
@@ -1759,8 +1759,8 @@
       transition: opacity .25s ease, transform 60ms linear;
     }
 
-    .sim-card.foil-card.is-dealt.is-revealed:hover .sim-card-canonical {
-      box-shadow: calc(var(--ry) / 1deg * -1px) calc(var(--rx) / 1deg * 1px + 20px) 34px rgba(0,0,0,.52);
+    .sim-card.foil-card.is-dealt.is-revealed .sim-card-canonical {
+      box-shadow: 0 12px 18px rgba(0,0,0,.42);
     }
     .sim-card.foil-card.is-next { filter: drop-shadow(0 0 9px color-mix(in srgb, var(--sim-rarity) 75%, transparent)); }
     .sim-card.foil-card .sim-card-face {
