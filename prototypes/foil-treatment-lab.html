@@ -1687,6 +1687,68 @@
     .treatment-panel.is-not-in-set .rate-line { color: #8f978b; }
     .treatment-panel.is-not-in-set .scope { color: #8f978b; }
 
+    /* Reveal cards use the exact same canonical 190x274 face as the foil lab cards, scaled to their dealt slot. */
+    .sim-card.foil-card {
+      --sim-card-scale: .86;
+      position: relative;
+      width: min(100%, 164px);
+      aspect-ratio: 190 / 274;
+      padding: 0;
+      overflow: visible;
+      color: #f6f0de;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      box-shadow: none;
+      cursor: pointer;
+      opacity: 0;
+      text-align: left;
+      transform: translate(0, 180px) scale(.22) rotate(8deg);
+      transition: opacity .25s ease, transform .36s cubic-bezier(.2,.8,.2,1);
+    }
+
+    .sim-card.foil-card.is-dealt { opacity: 1; transform: translate(0,0) scale(1); }
+    .sim-card.foil-card.is-next { filter: drop-shadow(0 0 9px color-mix(in srgb, var(--sim-rarity) 75%, transparent)); }
+    .sim-card.foil-card .sim-card-face {
+      display: block;
+      padding: 0;
+      overflow: visible;
+      border: 0;
+      border-radius: 10px;
+      background: transparent;
+      box-shadow: none;
+    }
+
+    .sim-card-canonical {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 190px;
+      height: 274px;
+      overflow: hidden;
+      border-radius: 10px;
+      box-shadow: 0 12px 22px rgba(0,0,0,.55);
+      transform: scale(var(--sim-card-scale));
+      transform-origin: top left;
+    }
+
+    .sim-card.foil-card .sim-card-canonical .card-frame {
+      grid-template-rows: 24px 114px 24px 1fr 24px;
+    }
+
+    .sim-card.foil-card .sim-card-face::before,
+    .sim-card.foil-card .sim-card-face::after { display: none; }
+
+    .sim-card.foil-card .sim-new-badge,
+    .sim-card.foil-card .sim-foil-badge { top: 43px; }
+
+    .sim-card.foil-card .sim-foil-badge {
+      max-width: 112px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
     .source-note {
       margin: 24px 0 0;
       color: var(--muted);
@@ -2310,12 +2372,20 @@
         return element;
       };
 
+      const syncSimCardScale = (button) => {
+        const width = button.offsetWidth;
+        if (width > 0) button.style.setProperty('--sim-card-scale', (width / 190).toFixed(4));
+      };
+
       const createSimCard = (pull, index) => {
         const slot = makeElement('div', 'sim-card-slot');
-        const button = makeElement('button', 'sim-card');
+        const button = makeElement('button', 'sim-card foil-card');
         button.type = 'button';
         button.style.setProperty('--sim-rarity', tierColors[pull.tier]);
+        button.style.setProperty('--set-line', simPackSet.line);
+        button.style.setProperty('--set-glow', simPackSet.glow);
         button.dataset.index = String(index);
+        button.dataset.set = simPackSet.id;
         if (pull.treatment) button.dataset.treatment = pull.treatment.id;
         if (pull.foil) button.classList.add('is-foil');
         button.setAttribute('aria-label', `Face-down card ${index + 1}`);
@@ -2323,38 +2393,72 @@
         const inner = makeElement('span', 'sim-card-inner');
         inner.appendChild(makeElement('span', 'sim-card-back'));
         const face = makeElement('span', 'sim-card-face');
-        const scene = makeElement('img', 'sim-card-scene');
+        const canonical = makeElement('span', 'sim-card-canonical');
+        const frame = makeElement('span', 'card-frame');
+
+        const stockArt = makeElement('span', 'set-stock-art');
+        const stockImage = document.createElement('img');
+        stockImage.src = setMapArt[simPackSet.id];
+        stockImage.alt = '';
+        stockArt.appendChild(stockImage);
+        frame.appendChild(stockArt);
+
+        const title = makeElement('span', 'card-section card-title');
+        title.appendChild(makeElement('span', 'card-title-text', pull.card.name));
+        frame.appendChild(title);
+
+        const artWindow = makeElement('span', 'art-window');
+        const scene = makeElement('img', 'area-art-image');
         scene.src = setSceneArt[simPackSet.id];
         scene.alt = '';
-        const map = makeElement('img', 'sim-card-map');
-        map.src = setMapArt[simPackSet.id];
-        map.alt = '';
-        face.append(scene, map);
-        face.appendChild(makeElement('span', 'sim-card-name', pull.card.name));
-
-        const art = makeElement('span', 'sim-card-art');
+        artWindow.appendChild(scene);
         const item = document.createElement('img');
+        item.className = 'card-art-image';
         item.src = pull.card.imageUrl || 'assets/twisted-bow.png';
         item.alt = '';
         item.loading = 'eager';
-        art.appendChild(item);
-        face.appendChild(art);
+        artWindow.appendChild(item);
+        const areaArt = makeElement('span', 'area-art');
+        areaArt.dataset.glyph = simPackSet.glyph;
+        areaArt.dataset.region = simPackSet.region;
+        artWindow.appendChild(areaArt);
+        frame.appendChild(artWindow);
 
-        const typeLine = makeElement('span', 'sim-card-type');
-        const categories = Array.isArray(pull.card.category) ? pull.card.category.slice(0, 2).join(' - ') : 'Card';
-        typeLine.appendChild(makeElement('span', '', categories || 'Card'));
+        const typeLine = makeElement('span', 'card-section type-line');
+        const tags = Array.isArray(pull.card.category)
+          ? pull.card.category.filter((tag) => String(tag).toLowerCase() !== 'resource').slice(0, 2)
+          : [];
+        typeLine.appendChild(makeElement('span', 'card-type', tags.join(' - ') || primaryCategory(pull.card)));
         const rarityMark = makeElement('span', `rarity-symbol rarity-symbol--${pull.tier}`);
-        rarityMark.setAttribute('aria-hidden', 'true');
+        rarityMark.setAttribute('role', 'img');
+        rarityMark.setAttribute('aria-label', `${tierLabels[pull.tier]} rarity`);
         typeLine.appendChild(rarityMark);
-        face.appendChild(typeLine);
+        frame.appendChild(typeLine);
 
-        const meta = makeElement('span', 'sim-card-meta');
-        meta.appendChild(makeElement('span', '', tierLabels[pull.tier]));
-        const score = makeElement('strong', '', Math.round(pull.card._simScore || 0).toLocaleString());
-        meta.appendChild(score);
-        face.appendChild(meta);
-        if (pull.isNew) face.appendChild(makeElement('span', 'sim-new-badge', 'NEW!'));
-        if (pull.foil) face.appendChild(makeElement('span', 'sim-foil-badge', pull.treatment.name));
+        const rules = makeElement('span', 'card-section rules-copy');
+        rules.appendChild(makeElement('span', 'rules-text', pull.card.examine || 'An item from Gielinor.'));
+        frame.appendChild(rules);
+
+        const scoreLine = makeElement('span', 'card-section score-line');
+        const power = makeElement('span', 'power-score');
+        power.appendChild(makeElement('span', 'power-label', 'Power'));
+        power.appendChild(makeElement('strong', '', Math.round(pull.card._simScore || 0).toLocaleString()));
+        scoreLine.appendChild(power);
+        frame.appendChild(scoreLine);
+        canonical.appendChild(frame);
+
+        const watermark = makeElement('span', 'set-watermark');
+        watermark.setAttribute('aria-hidden', 'true');
+        watermark.appendChild(makeElement('span', 'set-glyph', simPackSet.glyph));
+        watermark.appendChild(makeElement('span', 'set-name', simPackSet.region));
+        canonical.appendChild(watermark);
+        if (pull.foil) {
+          canonical.appendChild(makeElement('span', 'foil-effect'));
+          canonical.appendChild(makeElement('span', 'foil-detail'));
+        }
+        if (pull.isNew) canonical.appendChild(makeElement('span', 'sim-new-badge', 'NEW!'));
+        if (pull.foil) canonical.appendChild(makeElement('span', 'sim-foil-badge', pull.treatment.name));
+        face.appendChild(canonical);
 
         inner.appendChild(face);
         button.appendChild(inner);
@@ -2362,10 +2466,11 @@
         button.addEventListener('pointermove', (event) => {
           if (!button.classList.contains('is-revealed')) return;
           const bounds = button.getBoundingClientRect();
-          button.style.setProperty('--sim-mx', `${((event.clientX - bounds.left) / bounds.width * 100).toFixed(1)}%`);
-          button.style.setProperty('--sim-my', `${((event.clientY - bounds.top) / bounds.height * 100).toFixed(1)}%`);
+          button.style.setProperty('--mx', `${((event.clientX - bounds.left) / bounds.width * 100).toFixed(1)}%`);
+          button.style.setProperty('--my', `${((event.clientY - bounds.top) / bounds.height * 100).toFixed(1)}%`);
         });
         slot.appendChild(button);
+        window.requestAnimationFrame(() => syncSimCardScale(button));
         return slot;
       };
 
@@ -2612,6 +2717,9 @@
         simPackZoom = Math.max(.78, Math.min(1.22, simPackZoom + (event.deltaY < 0 ? .04 : -.04)));
         simPack.style.setProperty('--pack-zoom', simPackZoom.toFixed(2));
       }, { passive: false });
+      window.addEventListener('resize', () => {
+        simCardGrid.querySelectorAll('.sim-card').forEach(syncSimCardScale);
+      });
       updateSimCredits();
       loadSimCatalog();
 
