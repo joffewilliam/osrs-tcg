@@ -497,7 +497,7 @@
       inset: 20px;
       z-index: 4;
       display: grid;
-      grid-template-columns: repeat(6, minmax(0, 1fr));
+      grid-template-columns: repeat(5, minmax(0, 1fr));
       grid-template-rows: repeat(2, minmax(0, 1fr));
       gap: 15px;
       align-items: center;
@@ -505,11 +505,6 @@
     }
 
     .sim-card-slot { display: grid; place-items: center; min-width: 0; min-height: 0; }
-    .sim-card-slot:nth-child(1) { grid-column: 2 / span 2; }
-    .sim-card-slot:nth-child(2) { grid-column: 4 / span 2; }
-    .sim-card-slot:nth-child(3) { grid-column: 1 / span 2; }
-    .sim-card-slot:nth-child(4) { grid-column: 3 / span 2; }
-    .sim-card-slot:nth-child(5) { grid-column: 5 / span 2; }
 
     .sim-card {
       --sim-rarity: #c6c8c5;
@@ -1810,6 +1805,11 @@
       .pack-opening-header { align-items: start; flex-direction: column; }
       .pack-sim-stage { min-height: 510px; padding: 10px; }
       .sim-card-grid { inset: 10px; gap: 8px; }
+      .pack-sim-stage.has-cards { min-height: 1140px; }
+      .pack-sim-stage.has-cards .sim-card-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-rows: repeat(5, minmax(0, 1fr));
+      }
     }
 
     @media (max-width: 420px) {
@@ -1819,6 +1819,7 @@
       .treatment-grid { grid-template-columns: 1fr; }
       .pack-opening { padding: 12px; }
       .pack-sim-stage { min-height: 455px; }
+      .pack-sim-stage.has-cards { min-height: 1140px; }
       .sim-card-grid { gap: 4px; }
       .sim-card-name { font-size: .52rem; }
     }
@@ -1864,7 +1865,7 @@
         <div>
           <p class="eyebrow">Fair catalog · cosmetic set identity</p>
           <h2 id="packSystemTitle">Pack &amp; treatment math</h2>
-          <p class="pack-system-copy">Every themed set rolls from the complete card catalog. The set changes only the fixed area watermark, palette, and which foil treatments can appear. A treatment roll happens only after the default 1% foil roll, so no region has better cards or more foils. The table shows normal-pack odds.</p>
+          <p class="pack-system-copy">Every themed set rolls from the complete card catalog. Standard packs use ten fixed slots: six Commons, two Uncommons, a wildcard Reverse Holo, then a Rare+. The set changes only the fixed area watermark, palette, and bonus-foil treatment table, so no region has better cards. The table shows the additional 5% themed-foil odds.</p>
         </div>
         <label class="pack-select-field" for="setSelect">Pack set
           <select id="setSelect"></select>
@@ -1873,15 +1874,15 @@
 
       <div class="pack-metrics" aria-label="Pack odds summary">
         <div class="pack-metric"><span class="pack-metric-label">Card pool</span><strong>Every card</strong></div>
-        <div class="pack-metric"><span class="pack-metric-label">Cards per pack</span><strong>5</strong></div>
-        <div class="pack-metric"><span class="pack-metric-label">Foil per card</span><strong>1.000%</strong></div>
-        <div class="pack-metric"><span class="pack-metric-label">Any foil per pack</span><strong id="anyFoilRate">4.901%</strong></div>
+        <div class="pack-metric"><span class="pack-metric-label">Cards per pack</span><strong>10</strong></div>
+        <div class="pack-metric"><span class="pack-metric-label">Guaranteed slot</span><strong>Reverse Holo</strong></div>
+        <div class="pack-metric"><span class="pack-metric-label">Bonus foil per pack</span><strong id="anyFoilRate">5.000%</strong></div>
       </div>
 
       <div class="pack-math-grid">
         <div class="odds-table-wrap">
           <table class="odds-table">
-            <thead><tr><th>Treatment</th><th>Set tier</th><th>Of foils</th><th>Per pack</th><th>Average</th></tr></thead>
+            <thead><tr><th>Treatment</th><th>Set tier</th><th>Of bonus foils</th><th>Per pack</th><th>Average</th></tr></thead>
             <tbody id="oddsTableBody"></tbody>
           </table>
         </div>
@@ -1890,9 +1891,9 @@
             <input id="packCount" type="number" min="1" max="100000" value="100" inputmode="numeric">
           </label>
           <p class="projection-line"><span>Expected foil cards</span><strong id="expectedFoils">5.00</strong></p>
-          <p class="projection-line"><span>Chance of ≥1 foil</span><strong id="projectedFoilChance">99.343%</strong></p>
+          <p class="projection-line"><span>Chance of ≥1 bonus foil</span><strong id="projectedFoilChance">99.408%</strong></p>
           <p class="projection-line"><span>Expected chase pulls</span><strong id="expectedChase">0.15</strong></p>
-          <p class="formula-line">P(any foil) = 1 − (1 − 0.01)^(5 × packs)<br>Treatment P = 0.01 × set weight</p>
+          <p class="formula-line">Every pack: 1 wildcard Reverse Holo<br>P(bonus foil) = 5% per pack · Treatment P = 0.05 × set weight</p>
         </aside>
       </div>
     </section>
@@ -1900,9 +1901,9 @@
     <section class="pack-opening" id="packOpening" aria-labelledby="packOpeningTitle">
       <header class="pack-opening-header">
         <div>
-          <p class="eyebrow">Plugin-matched interactive reveal</p>
+          <p class="eyebrow">Ten-card slot-collated reveal</p>
           <h2 id="packOpeningTitle">Open a themed pack</h2>
-          <p class="pack-opening-copy">The pack uses the selected set's existing OSRS landmark artwork and treatment table, while every card still rolls from the complete plugin catalog. Buy the pack, click the wrapper, then flip the five cards in order. Right-click or use Reveal all to finish the reveal.</p>
+          <p class="pack-opening-copy">The pack uses the selected set's existing OSRS landmark artwork and the complete plugin catalog. It deals six Commons, two Uncommons, a wildcard Reverse Holo, and a Rare+. Reveal the ten cards in any order; right-click or use Reveal all to finish.</p>
         </div>
         <div class="sim-balance">Simulator credits<strong id="simCredits">25,000</strong></div>
       </header>
@@ -1911,7 +1912,7 @@
         <button class="sim-pack" id="simPack" type="button" aria-label="Selected pack. Buy the pack to begin.">
           <img class="sim-pack-art" id="simPackArt" src="assets/set-scenes/gielinor.webp" alt="">
           <span class="sim-pack-sheen" aria-hidden="true"></span>
-          <span class="sim-pack-label"><span id="simPackName">Gielinor Core Set</span><span class="sim-pack-subtitle">5-card booster</span></span>
+          <span class="sim-pack-label"><span id="simPackName">Gielinor Core Set</span><span class="sim-pack-subtitle">10-card booster</span></span>
         </button>
         <div class="sim-apex-burst" id="simApexBurst" aria-hidden="true">APEX PACK</div>
         <div class="sim-card-grid" id="simCardGrid" aria-live="polite"></div>
@@ -1938,7 +1939,7 @@
       <span class="rarity-key-item"><span class="rarity-symbol rarity-symbol--godly" aria-hidden="true"></span>Godly</span>
     </section>
     <section class="treatment-grid" id="treatmentGrid" aria-label="Foil treatment comparison"></section>
-    <p class="source-note">The proposed set layer is cosmetic: every pack keeps the same complete card pool and the same default 1% foil roll per card. The regional map is a subdued monochrome impression in the dark foil stock, while an actual in-game landmark scene sits behind the item inside the artwork frame. Both images stay fixed while the light and foil sheen move above them. RuneLite can reproduce the stack with cached PNGs, <code>AlphaComposite</code>, and the existing Java2D card pipeline. Treatment weights always total 100% after a foil is rolled. The existing 1-in-3,000 Apex event keeps its top-tier, 5× foil, and guaranteed-foil rules; each Apex foil then uses the selected set’s same treatment table.</p>
+    <p class="source-note">The proposed set layer is cosmetic: every pack keeps the same complete card pool. Standard packs contain six Commons, two Uncommons, a wildcard Reverse Holo, and a Rare+ in that order, plus a separate 5% chance of one additional themed foil. The regional map is a subdued monochrome impression in the dark card stock, while an actual in-game landmark scene sits behind the item inside the artwork frame. Non-foil cards receive no moving sheen. RuneLite can reproduce the foil stack with cached PNGs, <code>AlphaComposite</code>, and the existing Java2D card pipeline. The 1-in-3,000 Apex event keeps its top-tier pool and 5% bonus-foil checks.</p>
   </main>
 
   <template id="treatmentTemplate">
@@ -1995,8 +1996,8 @@
         { id: 'cosmic', name: 'Cosmic Foil', scope: 'Full art', recipe: 'Nebula gradient, sparse stars, and a tight bright core tied to tilt.' }
       ];
 
-      const CARDS_PER_PACK = 5;
-      const FOIL_RATE_PER_CARD = 0.01;
+      const CARDS_PER_PACK = 10;
+      const BONUS_FOIL_RATE_PER_PACK = 0.05;
       const PACK_PRICE = 2500;
       const APEX_RATE = 1 / 3000;
       const SIM_STARTING_CREDITS = 25000;
@@ -2239,8 +2240,7 @@
       const treatmentById = new Map(treatments.map((treatment) => [treatment.id, treatment]));
 
       const treatmentChancePerPack = (weightPercent) => {
-        const perCard = FOIL_RATE_PER_CARD * weightPercent / 100;
-        return 1 - Math.pow(1 - perCard, CARDS_PER_PACK);
+        return BONUS_FOIL_RATE_PER_PACK * weightPercent / 100;
       };
 
       const percent = (probability, digits = 3) => `${(probability * 100).toFixed(digits)}%`;
@@ -2352,6 +2352,15 @@
         return 'common';
       };
 
+      const randomRarePlusTier = () => {
+        const roll = Math.random() * .3066;
+        if (roll < .0066) return 'godly';
+        if (roll < .0266) return 'mythic';
+        if (roll < .0666) return 'legendary';
+        if (roll < .1466) return 'epic';
+        return 'rare';
+      };
+
       const pickCardForTier = (tier) => {
         const pool = tierPools.get(tier) || [];
         if (!pool.length) return simCatalog[Math.floor(Math.random() * simCatalog.length)];
@@ -2378,17 +2387,34 @@
       };
 
       const rollSimPack = (packSet, apex) => {
-        const foilRate = FOIL_RATE_PER_CARD * (apex ? 5 : 1);
-        const pulls = Array.from({ length: CARDS_PER_PACK }, () => {
-          const tier = randomTier(apex);
+        const slotTiers = apex
+          ? Array.from({ length: CARDS_PER_PACK }, () => randomTier(true))
+          : ['common', 'common', 'common', 'common', 'common', 'common', 'uncommon', 'uncommon', randomTier(false), randomRarePlusTier()];
+        const pulls = slotTiers.map((tier, index) => {
           const card = pickCardForTier(tier);
-          const foil = Math.random() < foilRate;
-          return { card, tier, foil, treatment: foil ? pickFoilTreatment(packSet) : null, isNew: !ownedSimCards.has(card.name) };
+          const reverseWildcard = index === 8;
+          return {
+            card,
+            tier,
+            slot: reverseWildcard ? 'Wildcard Reverse Holo' : (index === 9 ? 'Rare+' : tierLabels[tier]),
+            foil: reverseWildcard,
+            treatment: reverseWildcard ? treatmentById.get('reverse') : null,
+            isNew: !ownedSimCards.has(card.name)
+          };
         });
-        if (apex && !pulls.some((pull) => pull.foil)) {
-          const guaranteed = pulls[Math.floor(Math.random() * pulls.length)];
-          guaranteed.foil = true;
-          guaranteed.treatment = pickFoilTreatment(packSet);
+
+        const bonusEligible = pulls.map((pull, index) => index).filter((index) => index !== 8);
+        if (apex) {
+          bonusEligible.forEach((index) => {
+            if (Math.random() < .05) {
+              pulls[index].foil = true;
+              pulls[index].treatment = pickFoilTreatment(packSet);
+            }
+          });
+        } else if (Math.random() < BONUS_FOIL_RATE_PER_PACK) {
+          const index = bonusEligible[Math.floor(Math.random() * bonusEligible.length)];
+          pulls[index].foil = true;
+          pulls[index].treatment = pickFoilTreatment(packSet);
         }
         return pulls;
       };
@@ -2515,21 +2541,28 @@
       };
 
       const markNextSimCard = () => {
-        simCardGrid.querySelectorAll('.sim-card').forEach((card, index) => card.classList.toggle('is-next', simPhase === 'reveal' && index === simRevealedCount));
+        simCardGrid.querySelectorAll('.sim-card').forEach((card) => {
+          card.classList.toggle('is-next', simPhase === 'reveal' && !card.classList.contains('is-revealed'));
+        });
+      };
+
+      const nextUnrevealedIndex = () => {
+        const cards = [...simCardGrid.querySelectorAll('.sim-card')];
+        return cards.findIndex((card) => !card.classList.contains('is-revealed'));
       };
 
       const finishSimReveal = () => {
         simPhase = 'wait-close';
         revealAllButton.disabled = true;
         closeRevealButton.hidden = false;
-        simStatus.textContent = `${simIsApex ? 'Apex pack complete. ' : ''}All five cards revealed. Collection changes commit when you close the reveal.`;
+        simStatus.textContent = `${simIsApex ? 'Apex pack complete. ' : ''}All ten cards revealed. Collection changes commit when you close the reveal.`;
         markNextSimCard();
       };
 
       const revealSimCard = (index) => {
-        if (simPhase !== 'reveal' || index !== simRevealedCount) return;
+        if (simPhase !== 'reveal') return;
         const button = simCardGrid.querySelector(`.sim-card[data-index="${index}"]`);
-        if (!button) return;
+        if (!button || button.classList.contains('is-revealed')) return;
         const pull = simPulls[index];
         button.classList.add('is-revealed');
         button.setAttribute('aria-label', `${pull.card.name}, ${tierLabels[pull.tier]}${pull.foil ? `, ${pull.treatment.name}` : ''}`);
@@ -2542,13 +2575,14 @@
       const revealAllSimCards = () => {
         if (simPhase === 'ready') {
           openSimPack();
-          window.setTimeout(revealAllSimCards, 1400);
+          window.setTimeout(revealAllSimCards, 2100);
           return;
         }
         if (simPhase !== 'reveal') return;
         const revealNext = () => {
           if (simPhase !== 'reveal') return;
-          revealSimCard(simRevealedCount);
+          const nextIndex = nextUnrevealedIndex();
+          if (nextIndex >= 0) revealSimCard(nextIndex);
           if (simPhase === 'reveal') window.setTimeout(revealNext, 190);
         };
         revealNext();
@@ -2567,6 +2601,7 @@
         }
         window.setTimeout(() => {
           simPack.classList.add('is-hidden');
+          packSimStage.classList.add('has-cards');
           simCardGrid.replaceChildren(...simPulls.map(createSimCard));
           simPulls.forEach((pull, index) => {
             window.setTimeout(() => {
@@ -2574,12 +2609,13 @@
               if (card) card.classList.add('is-dealt');
             }, index * 115);
           });
+          const dealDuration = (simPulls.length - 1) * 115 + 360;
           window.setTimeout(() => {
             simPhase = 'reveal';
             revealAllButton.disabled = false;
-            simStatus.textContent = 'Click the glowing card to flip it. Space advances; right-click reveals all.';
+            simStatus.textContent = 'Click any face-down card to flip it. Space reveals the next remaining card; right-click reveals all.';
             markNextSimCard();
-          }, 760);
+          }, dealDuration);
         }, 500);
       };
 
@@ -2596,6 +2632,7 @@
         simPulls = rollSimPack(simPackSet, simIsApex);
         simRevealedCount = 0;
         simPhase = 'ready';
+        packSimStage.classList.remove('has-cards');
         setSelect.disabled = true;
         buyPackButton.disabled = true;
         revealAllButton.disabled = true;
@@ -2620,8 +2657,9 @@
         closeRevealButton.hidden = true;
         simCardGrid.replaceChildren();
         simPack.classList.remove('is-hidden', 'is-opening', 'is-ready');
+        packSimStage.classList.remove('has-cards');
         simPack.setAttribute('aria-label', 'Selected pack. Buy the pack to begin.');
-        simStatus.textContent = 'Choose a set or buy another five-card pack.';
+        simStatus.textContent = 'Choose a set or buy another ten-card pack.';
         updateSimPackPreview();
       };
 
@@ -2653,12 +2691,11 @@
 
       const renderProjection = () => {
         const packs = Math.max(1, Math.min(100000, Number(packCount.value) || 1));
-        const cardRolls = packs * CARDS_PER_PACK;
         const chase = selectedSet().odds.find((entry) => entry[2] === 'Chase');
         const chaseWeight = chase ? chase[1] / 100 : 0;
-        document.getElementById('expectedFoils').textContent = (cardRolls * FOIL_RATE_PER_CARD).toFixed(2);
-        document.getElementById('projectedFoilChance').textContent = percent(1 - Math.pow(1 - FOIL_RATE_PER_CARD, cardRolls));
-        document.getElementById('expectedChase').textContent = (cardRolls * FOIL_RATE_PER_CARD * chaseWeight).toFixed(2);
+        document.getElementById('expectedFoils').textContent = (packs * (1 + BONUS_FOIL_RATE_PER_PACK)).toFixed(2);
+        document.getElementById('projectedFoilChance').textContent = percent(1 - Math.pow(1 - BONUS_FOIL_RATE_PER_PACK, packs));
+        document.getElementById('expectedChase').textContent = (packs * BONUS_FOIL_RATE_PER_PACK * chaseWeight).toFixed(2);
       };
 
       const renderPackSet = () => {
@@ -2695,11 +2732,15 @@
           areaArt.dataset.region = packSet.region;
           areaArtImage.src = setSceneArt[packSet.id];
           stockArtImage.src = setMapArt[packSet.id];
-          panel.classList.toggle('is-not-in-set', !entry);
+          panel.classList.toggle('is-not-in-set', !entry && treatment.id !== 'reverse');
           card.setAttribute('aria-label', `${treatment.name} in the ${packSet.name}. Drag or use arrow keys to tilt.`);
 
           const rateLine = panel.querySelector('.rate-line');
-          if (entry) {
+          if (treatment.id === 'reverse') {
+            rateLine.textContent = entry
+              ? `Guaranteed wildcard in every pack · plus ${entry[1]}% of bonus foils · ${percent(treatmentChancePerPack(entry[1]))} bonus per pack`
+              : `Guaranteed wildcard in every pack · not in this set's bonus-foil table`;
+          } else if (entry) {
             const chance = treatmentChancePerPack(entry[1]);
             rateLine.textContent = `${entry[1]}% of this set's foils · ${percent(chance)} per pack · ${oneIn(chance)}`;
           } else {
@@ -2719,13 +2760,13 @@
       });
 
       treatmentViews.forEach(({ treatment, panel }) => {
-        const appearances = packSets
-          .filter((packSet) => packSet.odds.some((entry) => entry[0] === treatment.id))
+        const appearances = (treatment.id === 'reverse' ? packSets : packSets
+          .filter((packSet) => packSet.odds.some((entry) => entry[0] === treatment.id)))
           .map((packSet) => packSet.region);
         panel.querySelector('.pack-line span').textContent = appearances.join(' · ');
       });
 
-      document.getElementById('anyFoilRate').textContent = percent(1 - Math.pow(1 - FOIL_RATE_PER_CARD, CARDS_PER_PACK));
+      document.getElementById('anyFoilRate').textContent = percent(BONUS_FOIL_RATE_PER_PACK);
       setSelect.value = 'gielinor';
       setSelect.addEventListener('change', renderPackSet);
       packCount.addEventListener('input', renderProjection);
@@ -2748,7 +2789,10 @@
         if (event.code === 'Space') {
           event.preventDefault();
           if (simPhase === 'ready') openSimPack();
-          else if (simPhase === 'reveal') revealSimCard(simRevealedCount);
+          else if (simPhase === 'reveal') {
+            const nextIndex = nextUnrevealedIndex();
+            if (nextIndex >= 0) revealSimCard(nextIndex);
+          }
         } else if (event.key === 'Escape' && simPhase === 'wait-close') closeSimReveal();
       });
       packSimStage.addEventListener('wheel', (event) => {
