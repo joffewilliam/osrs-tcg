@@ -289,7 +289,7 @@
       position: absolute;
       inset: 0;
       display: grid;
-      grid-template-rows: 24px 120px 25px 1fr 27px;
+      grid-template-rows: 24px 114px 24px 1fr 24px;
       gap: 3px;
       padding: 9px;
       overflow: hidden;
@@ -417,37 +417,30 @@
 
     .rules-copy {
       align-content: center;
-      padding: 8px;
+      padding: 9px 8px;
       color: #dedacb;
       font-family: Georgia, "Times New Roman", serif;
-      font-size: .65rem;
-      line-height: 1.32;
+      font-size: .60rem;
+      line-height: 1.25;
     }
 
     .score-line {
-      grid-template-columns: minmax(0, 1fr) auto;
-      padding: 0 7px;
+      grid-template-columns: 1fr;
+      place-items: center;
+      padding: 0 6px;
       background: linear-gradient(90deg, #181a18, #302819);
-    }
-
-    .collector-code {
-      color: #9f9f95;
-      font-size: .45rem;
-      font-weight: 800;
-      letter-spacing: .1em;
-      text-transform: uppercase;
     }
 
     .power-score {
       display: inline-flex;
-      gap: 3px;
+      gap: 6px;
       align-items: baseline;
       white-space: nowrap;
     }
 
     .power-label {
       color: #bdad7d;
-      font-size: .42rem;
+      font-size: .46rem;
       font-weight: 900;
       letter-spacing: .09em;
       text-transform: uppercase;
@@ -456,7 +449,7 @@
     .power-score strong {
       color: #ffe58d;
       font-family: Georgia, "Times New Roman", serif;
-      font-size: .64rem;
+      font-size: .62rem;
       letter-spacing: -.02em;
       text-shadow: 0 1px #000;
     }
@@ -867,8 +860,7 @@
             </span>
             <span class="card-section rules-copy">A mystical bow carved from the twisted remains of the Great Olm.</span>
             <span class="card-section score-line">
-              <span class="collector-code">OSRS · TBOW</span>
-              <span class="power-score"><span class="power-label">Power</span><strong>1.25M</strong></span>
+              <span class="power-score"><span class="power-label">Power</span><strong>1,250,000</strong></span>
             </span>
           </span>
           <span class="foil-effect" aria-hidden="true"></span>
