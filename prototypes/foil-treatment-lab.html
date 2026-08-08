@@ -324,13 +324,33 @@
 
     .foil-detail {
       z-index: 7;
-      background: radial-gradient(circle at var(--mx) var(--my),
-        rgba(255,255,255,.92) 0 2%,
-        rgba(221,244,255,.52) 8%,
-        rgba(144,205,255,.24) 18%,
-        transparent 34%);
-      opacity: calc(var(--foil-strength) * .72);
-      mix-blend-mode: screen;
+      background:
+        radial-gradient(circle at var(--mx) var(--my),
+          rgba(255,255,255,.96) 0 2%,
+          rgba(221,244,255,.58) 7%,
+          transparent 22%),
+        linear-gradient(108deg,
+          transparent 8%,
+          rgba(255,64,105,.82) 23%,
+          rgba(255,227,91,.86) 31%,
+          rgba(77,255,190,.82) 39%,
+          rgba(79,195,255,.86) 47%,
+          rgba(210,106,255,.82) 55%,
+          transparent 70%),
+        linear-gradient(112deg,
+          transparent 28%,
+          rgba(255,255,255,.08) 38%,
+          rgba(255,255,255,.68) 49%,
+          rgba(255,255,255,.08) 60%,
+          transparent 70%);
+      background-position:
+        0 0,
+        calc(var(--mx) * .62) calc(var(--my) * .32),
+        calc(var(--mx) * -.34) calc(var(--my) * -.18);
+      background-size: auto, 165% 165%, 210% 210%;
+      filter: saturate(1.5) contrast(1.08);
+      opacity: calc(var(--foil-strength) * .82);
+      mix-blend-mode: color-dodge;
     }
 
     /* Full-card rainbow foil. */
@@ -507,16 +527,12 @@
 
     .foil-card[data-treatment="facet"] .foil-effect {
       clip-path: polygon(0 0, 45% 0, 56% 21%, 100% 8%, 100% 62%, 76% 71%, 100% 100%, 38% 100%, 27% 73%, 0 86%);
-      background: conic-gradient(from 33deg at 50% 50%, rgba(255,255,255,.86), rgba(90,221,255,.3), transparent 18%, rgba(222,113,255,.42) 28%, transparent 45%, rgba(255,222,101,.48) 55%, transparent 73%, rgba(255,255,255,.72));
-      opacity: calc(var(--foil-strength) * .64);
-    }
-    .foil-card[data-treatment="facet"] .foil-detail {
       background:
-        radial-gradient(circle at var(--mx) var(--my), rgba(255,255,255,.92) 0 2%, rgba(180,226,255,.36) 12%, transparent 31%),
         linear-gradient(63deg, transparent 49.4%, rgba(255,255,255,.58) 50%, transparent 50.6%),
         linear-gradient(121deg, transparent 49.5%, rgba(142,223,255,.45) 50%, transparent 50.5%),
-        linear-gradient(18deg, transparent 49.4%, rgba(255,184,242,.38) 50%, transparent 50.6%);
-      opacity: calc(var(--foil-strength) * .7);
+        linear-gradient(18deg, transparent 49.4%, rgba(255,184,242,.38) 50%, transparent 50.6%),
+        conic-gradient(from 33deg at 50% 50%, rgba(255,255,255,.86), rgba(90,221,255,.3), transparent 18%, rgba(222,113,255,.42) 28%, transparent 45%, rgba(255,222,101,.48) 55%, transparent 73%, rgba(255,255,255,.72));
+      opacity: calc(var(--foil-strength) * .64);
     }
 
     .foil-card[data-treatment="cosmic"] .foil-effect {
@@ -584,7 +600,7 @@
       <div>
         <p class="eyebrow">OSRS TCG · RuneLite-feasible study</p>
         <h1>Foil Treatment Lab</h1>
-        <p class="intro">Drag any card to tilt it and move the virtual reflection. The printed foil pattern stays locked to the card while only the light response moves. Every treatment can be rebuilt with Java2D clipping, gradients, alpha composites, cached texture masks, and the existing shared card renderer.</p>
+        <p class="intro">Drag any card to tilt it. The printed pattern stays locked to the card while a broad holographic spectrum and specular highlight travel across it. Every treatment can be rebuilt with Java2D clipping, gradients, alpha composites, cached texture masks, and the existing shared card renderer.</p>
       </div>
       <div class="controls" aria-label="Foil lab controls">
         <label class="range-field" for="foilStrength">Foil intensity <span id="strengthValue">78%</span>
@@ -594,7 +610,7 @@
       </div>
     </header>
 
-    <p class="status-line"><strong>20 renderable finishes</strong><span>Fixed card-space patterns</span><span>Drag with mouse or touch</span><span>Arrow keys tilt focused cards</span><span>No shader or GPU plugin required</span></p>
+    <p class="status-line"><strong>20 renderable finishes</strong><span>Fixed pattern + moving holo sheen</span><span>Drag with mouse or touch</span><span>Arrow keys tilt focused cards</span><span>No shader or GPU plugin required</span></p>
     <section class="treatment-grid" id="treatmentGrid" aria-label="Foil treatment comparison"></section>
     <p class="source-note">Treatment names are a design reference to physical TCG finishes. The OSRS variants should use original pack names, pull rates, and visual tuning. “Reverse holo” is included at request even though it is more strongly associated with other TCGs.</p>
   </main>
