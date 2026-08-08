@@ -1317,7 +1317,7 @@
       <span class="rarity-key-item"><span class="rarity-symbol rarity-symbol--godly" aria-hidden="true"></span>Godly</span>
     </section>
     <section class="treatment-grid" id="treatmentGrid" aria-label="Foil treatment comparison"></section>
-    <p class="source-note">The proposed set layer is cosmetic: every pack keeps the same complete card pool and the same default 1% foil roll per card. Official Jagex regional artwork is printed twice: clearly behind the item art and as a subdued monochrome impression in the dark card stock. Both images stay fixed while the light and foil sheen move above them. RuneLite can reproduce the stack with cached PNGs, <code>AlphaComposite</code>, and the existing Java2D card pipeline. Treatment weights always total 100% after a foil is rolled. The existing 1-in-3,000 Apex event keeps its top-tier, 5× foil, and guaranteed-foil rules; each Apex foil then uses the selected set’s same treatment table.</p>
+    <p class="source-note">The proposed set layer is cosmetic: every pack keeps the same complete card pool and the same default 1% foil roll per card. The regional map is a subdued monochrome impression in the dark foil stock, while an actual in-game landmark scene sits behind the item inside the artwork frame. Both images stay fixed while the light and foil sheen move above them. RuneLite can reproduce the stack with cached PNGs, <code>AlphaComposite</code>, and the existing Java2D card pipeline. Treatment weights always total 100% after a foil is rolled. The existing 1-in-3,000 Apex event keeps its top-tier, 5× foil, and guaranteed-foil rules; each Apex foil then uses the selected set’s same treatment table.</p>
   </main>
 
   <template id="treatmentTemplate">
@@ -1376,7 +1376,7 @@
 
       const CARDS_PER_PACK = 5;
       const FOIL_RATE_PER_CARD = 0.01;
-      const setArt = {
+      const setMapArt = {
         gielinor: 'assets/set-art/gielinor.webp',
         misthalin: 'assets/set-art/misthalin.webp',
         asgarnia: 'assets/set-art/asgarnia.webp',
@@ -1389,6 +1389,20 @@
         karamja: 'assets/set-art/karamja.webp',
         tirannwn: 'assets/set-art/tirannwn.webp',
         varlamore: 'assets/set-art/varlamore.webp'
+      };
+      const setSceneArt = {
+        gielinor: 'assets/set-scenes/gielinor.webp',
+        misthalin: 'assets/set-scenes/misthalin.webp',
+        asgarnia: 'assets/set-scenes/asgarnia.webp',
+        kandarin: 'assets/set-scenes/kandarin.webp',
+        kourend: 'assets/set-scenes/kourend.webp',
+        morytania: 'assets/set-scenes/morytania.webp',
+        desert: 'assets/set-scenes/desert.webp',
+        wilderness: 'assets/set-scenes/wilderness.webp',
+        fremennik: 'assets/set-scenes/fremennik.webp',
+        karamja: 'assets/set-scenes/karamja.webp',
+        tirannwn: 'assets/set-scenes/tirannwn.webp',
+        varlamore: 'assets/set-scenes/varlamore.webp'
       };
       const packSets = [
         {
@@ -1623,8 +1637,8 @@
           watermark.querySelector('.set-name').textContent = packSet.region;
           areaArt.dataset.glyph = packSet.glyph;
           areaArt.dataset.region = packSet.region;
-          areaArtImage.src = setArt[packSet.id];
-          stockArtImage.src = setArt[packSet.id];
+          areaArtImage.src = setSceneArt[packSet.id];
+          stockArtImage.src = setMapArt[packSet.id];
           panel.classList.toggle('is-not-in-set', !entry);
           card.setAttribute('aria-label', `${treatment.name} in the ${packSet.name}. Drag or use arrow keys to tilt.`);
 
