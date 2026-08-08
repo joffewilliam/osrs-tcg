@@ -322,13 +322,22 @@
       mix-blend-mode: color-dodge;
     }
 
-    .foil-detail { z-index: 7; mix-blend-mode: screen; }
+    .foil-detail {
+      z-index: 7;
+      background: radial-gradient(circle at var(--mx) var(--my),
+        rgba(255,255,255,.92) 0 2%,
+        rgba(221,244,255,.52) 8%,
+        rgba(144,205,255,.24) 18%,
+        transparent 34%);
+      opacity: calc(var(--foil-strength) * .72);
+      mix-blend-mode: screen;
+    }
 
     /* Full-card rainbow foil. */
     .foil-card[data-treatment="traditional"] .foil-effect {
       background:
-        radial-gradient(circle at var(--mx) var(--my), rgba(255,255,255,.85), transparent 12%),
-        conic-gradient(from 210deg at var(--mx) var(--my), #ff3154, #ffe45a, #3cffad, #4ac7ff, #c570ff, #ff3154);
+        repeating-linear-gradient(72deg, rgba(255,255,255,.13) 0 1px, transparent 1px 6px),
+        conic-gradient(from 210deg at 50% 50%, #ff3154, #ffe45a, #3cffad, #4ac7ff, #c570ff, #ff3154);
       filter: saturate(1.4);
       opacity: calc(var(--foil-strength) * .48);
     }
@@ -338,7 +347,6 @@
       background:
         linear-gradient(112deg, transparent 22%, rgba(122,255,240,.75) 40%, rgba(255,114,231,.72) 51%, transparent 69%),
         repeating-linear-gradient(72deg, rgba(255,255,255,.16) 0 1px, transparent 1px 5px);
-      background-position: calc(var(--mx) * .7) calc(var(--my) * .7);
       opacity: calc(var(--foil-strength) * .72);
     }
     .foil-card[data-treatment="reverse"] .art-window { z-index: 8; }
@@ -348,7 +356,7 @@
       inset: 3px;
       border: 8px double rgba(228,210,158,.75);
       background:
-        repeating-radial-gradient(circle at var(--mx) var(--my), rgba(255,255,255,.42) 0 1px, transparent 1px 4px),
+        repeating-radial-gradient(circle at 50% 50%, rgba(255,255,255,.42) 0 1px, transparent 1px 4px),
         linear-gradient(125deg, #5c513a, #d6cab1 37%, #5b554d 51%, #d1b96c 68%, #3f3b35);
       background-clip: border-box;
       opacity: calc(var(--foil-strength) * .64);
@@ -358,8 +366,8 @@
     /* Fine relief waves over the art and frame. */
     .foil-card[data-treatment="textured"] .foil-effect {
       background:
-        repeating-radial-gradient(ellipse at var(--mx) var(--my), transparent 0 7px, rgba(255,255,255,.38) 8px, transparent 10px),
-        conic-gradient(from 90deg at var(--mx) var(--my), rgba(255,70,170,.35), rgba(80,230,255,.42), rgba(255,220,80,.38), rgba(255,70,170,.35));
+        repeating-radial-gradient(ellipse at 50% 50%, transparent 0 7px, rgba(255,255,255,.38) 8px, transparent 10px),
+        conic-gradient(from 90deg at 50% 50%, rgba(255,70,170,.35), rgba(80,230,255,.42), rgba(255,220,80,.38), rgba(255,70,170,.35));
       filter: contrast(1.5);
       opacity: calc(var(--foil-strength) * .58);
     }
@@ -370,9 +378,8 @@
         radial-gradient(circle at 71% 12%, #8ffcff 0 1.5px, transparent 2.5px),
         radial-gradient(circle at 82% 62%, #ff9bea 0 1px, transparent 2px),
         radial-gradient(circle at 25% 77%, #fff29d 0 1.5px, transparent 2.5px),
-        radial-gradient(circle at var(--mx) var(--my), rgba(255,255,255,.86), rgba(86,133,255,.31) 13%, transparent 33%),
         repeating-radial-gradient(circle at 30% 40%, rgba(255,255,255,.36) 0 1px, transparent 1px 11px);
-      background-size: 43px 51px, 61px 47px, 53px 67px, 71px 59px, auto, 29px 31px;
+      background-size: 43px 51px, 61px 47px, 53px 67px, 71px 59px, 29px 31px;
       opacity: calc(var(--foil-strength) * .83);
     }
 
@@ -381,12 +388,11 @@
         linear-gradient(115deg, transparent 0 34%, rgba(255,255,255,.9) 42%, rgba(120,225,255,.62) 46%, transparent 54%),
         repeating-linear-gradient(118deg, transparent 0 12px, rgba(255,255,255,.36) 13px 15px, transparent 16px 28px),
         repeating-linear-gradient(67deg, transparent 0 23px, rgba(116,170,255,.25) 24px 26px, transparent 28px 44px);
-      background-position: calc(var(--mx) * 1.1) calc(var(--my) * 1.1), calc(var(--mx) * -.25) 0, 0 calc(var(--my) * .2);
       opacity: calc(var(--foil-strength) * .74);
     }
 
     .foil-card[data-treatment="halo"] .foil-effect {
-      background: repeating-radial-gradient(ellipse at var(--mx) var(--my),
+      background: repeating-radial-gradient(ellipse at 50% 50%,
         rgba(255,255,255,.75) 0 3px,
         rgba(99,230,255,.48) 7px,
         rgba(201,104,255,.43) 13px,
@@ -403,15 +409,13 @@
         radial-gradient(ellipse at 63% 38%, #ffe75f 0 2.5px, transparent 3.5px),
         radial-gradient(ellipse at 22% 57%, #7cffb5 0 2px, transparent 3px),
         radial-gradient(ellipse at 84% 74%, #ae8cff 0 2.5px, transparent 3.5px),
-        radial-gradient(ellipse at 37% 88%, #ff906f 0 2px, transparent 3px),
-        radial-gradient(circle at var(--mx) var(--my), rgba(255,255,255,.72), transparent 20%);
-      background-size: 47px 41px, 59px 53px, 67px 49px, 43px 61px, 71px 57px, 53px 47px, auto;
-      background-position: calc(var(--mx) * .1) calc(var(--my) * .1), calc(var(--mx) * -.1) 0, 0 calc(var(--my) * .12), 0 0, 0 0, 0 0, 0 0;
+        radial-gradient(ellipse at 37% 88%, #ff906f 0 2px, transparent 3px);
+      background-size: 47px 41px, 59px 53px, 67px 49px, 43px 61px, 71px 57px, 53px 47px;
       opacity: calc(var(--foil-strength) * .94);
     }
 
     .foil-card[data-treatment="ripple"] .foil-effect {
-      background: repeating-radial-gradient(ellipse at calc(var(--mx) + 8%) calc(var(--my) - 4%),
+      background: repeating-radial-gradient(ellipse at 58% 46%,
         transparent 0 14px,
         rgba(255,255,255,.4) 16px,
         rgba(117,219,255,.26) 19px,
@@ -437,16 +441,13 @@
         radial-gradient(ellipse at center, transparent 0 20%, rgba(255,255,255,.46) 22% 24%, transparent 26%),
         conic-gradient(from 45deg at 50% 50%, transparent 0 18%, rgba(185,255,225,.42) 20% 25%, transparent 27% 48%, rgba(255,173,232,.38) 50% 55%, transparent 57%);
       background-size: 34px 42px, 42px 42px;
-      background-position: calc(var(--mx) * .12) calc(var(--my) * .12), 0 0;
       opacity: calc(var(--foil-strength) * .68);
     }
 
     .foil-card[data-treatment="raised"] .foil-effect {
       inset: 7px;
       border: 4px solid rgba(255,233,164,.64);
-      background:
-        radial-gradient(circle at var(--mx) var(--my), rgba(255,255,255,.9), transparent 14%),
-        linear-gradient(125deg, transparent 31%, rgba(255,215,117,.55) 45%, rgba(156,239,255,.46) 52%, transparent 67%);
+      background: linear-gradient(125deg, transparent 31%, rgba(255,215,117,.55) 45%, rgba(156,239,255,.46) 52%, transparent 67%);
       box-shadow: inset 0 0 0 2px rgba(29,18,5,.55), inset 0 0 8px rgba(255,235,175,.75);
       opacity: calc(var(--foil-strength) * .66);
     }
@@ -458,7 +459,7 @@
 
     .foil-card[data-treatment="fracture"] .foil-effect {
       background:
-        conic-gradient(from 12deg at var(--mx) var(--my), transparent 0 7%, rgba(255,255,255,.58) 8%, transparent 10% 22%, rgba(90,225,255,.4) 24%, transparent 27% 39%, rgba(255,104,223,.35) 41%, transparent 44% 63%, rgba(255,229,111,.38) 65%, transparent 68%),
+        conic-gradient(from 12deg at 50% 50%, transparent 0 7%, rgba(255,255,255,.58) 8%, transparent 10% 22%, rgba(90,225,255,.4) 24%, transparent 27% 39%, rgba(255,104,223,.35) 41%, transparent 44% 63%, rgba(255,229,111,.38) 65%, transparent 68%),
         repeating-conic-gradient(from 8deg at 47% 42%, rgba(255,255,255,.22) 0 1deg, transparent 1deg 17deg);
       opacity: calc(var(--foil-strength) * .68);
     }
@@ -472,10 +473,10 @@
       filter: saturate(1.55);
       opacity: calc(var(--foil-strength) * .55);
     }
+    .foil-card[data-treatment="double-rainbow"] .foil-detail { opacity: 0; }
 
     .foil-card[data-treatment="silver"] .foil-effect {
       background:
-        radial-gradient(circle at var(--mx) var(--my), rgba(255,255,255,.96), transparent 14%),
         repeating-linear-gradient(112deg, rgba(255,255,255,.06) 0 1px, transparent 1px 4px),
         linear-gradient(112deg, #24272a, #f1f4f5 38%, #7d8588 49%, #e7ebec 61%, #33383a);
       opacity: calc(var(--foil-strength) * .54);
@@ -485,9 +486,7 @@
     .foil-card[data-treatment="first-place"] .foil-effect {
       inset: 2px;
       border: 8px solid rgba(243,194,72,.82);
-      background:
-        radial-gradient(circle at var(--mx) var(--my), rgba(255,255,255,.9), transparent 15%),
-        linear-gradient(115deg, transparent 24%, rgba(255,225,118,.73) 43%, rgba(255,247,198,.87) 49%, transparent 67%);
+      background: linear-gradient(115deg, transparent 24%, rgba(255,225,118,.73) 43%, rgba(255,247,198,.87) 49%, transparent 67%);
       opacity: calc(var(--foil-strength) * .78);
     }
 
@@ -495,28 +494,25 @@
       background:
         repeating-radial-gradient(ellipse at 15% 50%, transparent 0 10px, rgba(236,248,255,.38) 11px 13px, transparent 14px 26px),
         linear-gradient(105deg, transparent 25%, rgba(255,255,255,.8) 45%, rgba(160,214,242,.48) 51%, transparent 70%);
-      background-position: calc(var(--mx) * .12) calc(var(--my) * .12), calc(var(--mx) * .4) 0;
       opacity: calc(var(--foil-strength) * .63);
     }
 
     .foil-card[data-treatment="neon-ink"] .foil-effect {
       inset: 8px;
       border: 3px solid rgba(73,255,226,.78);
-      background:
-        linear-gradient(142deg, transparent 30%, rgba(40,255,219,.74) 38% 41%, transparent 43% 57%, rgba(255,61,207,.7) 59% 62%, transparent 64%),
-        radial-gradient(circle at var(--mx) var(--my), rgba(255,255,255,.9), transparent 18%);
+      background: linear-gradient(142deg, transparent 30%, rgba(40,255,219,.74) 38% 41%, transparent 43% 57%, rgba(255,61,207,.7) 59% 62%, transparent 64%);
       box-shadow: inset 0 0 16px rgba(53,255,226,.44), 0 0 12px rgba(255,53,214,.28);
       opacity: calc(var(--foil-strength) * .75);
     }
 
     .foil-card[data-treatment="facet"] .foil-effect {
       clip-path: polygon(0 0, 45% 0, 56% 21%, 100% 8%, 100% 62%, 76% 71%, 100% 100%, 38% 100%, 27% 73%, 0 86%);
-      background:
-        conic-gradient(from 33deg at var(--mx) var(--my), rgba(255,255,255,.86), rgba(90,221,255,.3), transparent 18%, rgba(222,113,255,.42) 28%, transparent 45%, rgba(255,222,101,.48) 55%, transparent 73%, rgba(255,255,255,.72));
+      background: conic-gradient(from 33deg at 50% 50%, rgba(255,255,255,.86), rgba(90,221,255,.3), transparent 18%, rgba(222,113,255,.42) 28%, transparent 45%, rgba(255,222,101,.48) 55%, transparent 73%, rgba(255,255,255,.72));
       opacity: calc(var(--foil-strength) * .64);
     }
     .foil-card[data-treatment="facet"] .foil-detail {
       background:
+        radial-gradient(circle at var(--mx) var(--my), rgba(255,255,255,.92) 0 2%, rgba(180,226,255,.36) 12%, transparent 31%),
         linear-gradient(63deg, transparent 49.4%, rgba(255,255,255,.58) 50%, transparent 50.6%),
         linear-gradient(121deg, transparent 49.5%, rgba(142,223,255,.45) 50%, transparent 50.5%),
         linear-gradient(18deg, transparent 49.4%, rgba(255,184,242,.38) 50%, transparent 50.6%);
@@ -525,7 +521,7 @@
 
     .foil-card[data-treatment="cosmic"] .foil-effect {
       background:
-        radial-gradient(ellipse at var(--mx) var(--my), rgba(255,255,255,.95) 0 2%, rgba(106,217,255,.6) 6%, rgba(176,74,255,.42) 13%, transparent 29%),
+        radial-gradient(ellipse at 50% 50%, rgba(255,255,255,.58) 0 2%, rgba(106,217,255,.42) 6%, rgba(176,74,255,.34) 13%, transparent 29%),
         radial-gradient(ellipse at 25% 70%, rgba(255,87,205,.46), transparent 23%),
         radial-gradient(ellipse at 78% 25%, rgba(66,223,255,.42), transparent 21%),
         repeating-radial-gradient(circle at 50% 50%, white 0 1px, transparent 1px 14px);
@@ -588,7 +584,7 @@
       <div>
         <p class="eyebrow">OSRS TCG · RuneLite-feasible study</p>
         <h1>Foil Treatment Lab</h1>
-        <p class="intro">Drag any card to move the virtual light source. Every treatment below can be rebuilt in the plugin with Java2D clipping, gradients, alpha composites, cached texture masks, and the existing shared card renderer.</p>
+        <p class="intro">Drag any card to tilt it and move the virtual reflection. The printed foil pattern stays locked to the card while only the light response moves. Every treatment can be rebuilt with Java2D clipping, gradients, alpha composites, cached texture masks, and the existing shared card renderer.</p>
       </div>
       <div class="controls" aria-label="Foil lab controls">
         <label class="range-field" for="foilStrength">Foil intensity <span id="strengthValue">78%</span>
@@ -598,7 +594,7 @@
       </div>
     </header>
 
-    <p class="status-line"><strong>20 renderable finishes</strong><span>Drag with mouse or touch</span><span>Arrow keys tilt focused cards</span><span>No shader or GPU plugin required</span></p>
+    <p class="status-line"><strong>20 renderable finishes</strong><span>Fixed card-space patterns</span><span>Drag with mouse or touch</span><span>Arrow keys tilt focused cards</span><span>No shader or GPU plugin required</span></p>
     <section class="treatment-grid" id="treatmentGrid" aria-label="Foil treatment comparison"></section>
     <p class="source-note">Treatment names are a design reference to physical TCG finishes. The OSRS variants should use original pack names, pull rates, and visual tuning. “Reverse holo” is included at request even though it is more strongly associated with other TCGs.</p>
   </main>
