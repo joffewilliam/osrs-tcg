@@ -16,7 +16,7 @@
       --ink: #f0ead8;
       --muted: #b4b8ac;
       --green: #a5c887;
-      --foil-strength: .78;
+      --foil-strength: .40;
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
 
@@ -604,13 +604,26 @@
       mix-blend-mode: screen;
     }
 
-    /* Fine relief waves over the art and frame. */
+    /* Dense micro-relief over the art and frame, sized to suggest a tactile varnish. */
     .foil-card[data-treatment="textured"] .foil-effect {
       background:
-        repeating-radial-gradient(ellipse at 50% 50%, transparent 0 7px, rgba(255,255,255,.38) 8px, transparent 10px),
-        conic-gradient(from 90deg at 50% 50%, rgba(255,70,170,.35), rgba(80,230,255,.42), rgba(255,220,80,.38), rgba(255,70,170,.35));
-      filter: contrast(1.5);
-      opacity: calc(var(--foil-strength) * .58);
+        radial-gradient(circle at 1px 1px, rgba(255,255,255,.58) 0 .65px, rgba(0,0,0,.34) .75px 1.05px, transparent 1.15px),
+        repeating-linear-gradient(28deg, transparent 0 2px, rgba(255,255,255,.19) 2px 2.7px, transparent 2.7px 5px),
+        repeating-linear-gradient(118deg, transparent 0 3px, rgba(117,218,235,.13) 3px 3.7px, transparent 3.7px 7px),
+        linear-gradient(125deg, rgba(255,153,195,.22), rgba(173,247,255,.26) 48%, rgba(255,242,190,.22));
+      background-size: 4px 4px, 6px 6px, 8px 8px, auto;
+      filter: contrast(1.35);
+      opacity: calc(var(--foil-strength) * .72);
+    }
+
+    .foil-card[data-treatment="textured"] .art-window::before {
+      background:
+        radial-gradient(circle at 1px 1px, rgba(255,255,255,.40) 0 .55px, rgba(0,0,0,.24) .65px .95px, transparent 1px),
+        repeating-linear-gradient(28deg, transparent 0 3px, rgba(255,255,255,.12) 3px 3.6px, transparent 3.6px 6px),
+        radial-gradient(circle at 50% 45%, transparent 0 28%, rgba(0,0,0,.30) 78%);
+      background-size: 4px 4px, 7px 7px, auto;
+      opacity: .58;
+      mix-blend-mode: overlay;
     }
 
     .foil-card[data-treatment="galaxy"] .foil-effect {
@@ -824,8 +837,8 @@
         <p class="intro">Drag any card to tilt it. The printed pattern stays locked to the card while a broad holographic spectrum and specular highlight travel across it. Every treatment can be rebuilt with Java2D clipping, gradients, alpha composites, cached texture masks, and the existing shared card renderer.</p>
       </div>
       <div class="controls" aria-label="Foil lab controls">
-        <label class="range-field" for="foilStrength">Foil intensity <span id="strengthValue">78%</span>
-          <input id="foilStrength" type="range" min="20" max="100" value="78">
+        <label class="range-field" for="foilStrength">Foil intensity <span id="strengthValue">40%</span>
+          <input id="foilStrength" type="range" min="20" max="100" value="40">
         </label>
         <button class="reset-button" id="resetTilt" type="button">Reset all tilts</button>
       </div>
@@ -878,7 +891,7 @@
         { id: 'traditional', name: 'Traditional Foil', scope: 'Full card', recipe: '<code>LinearGradientPaint</code> rainbow sweep + clipped specular hotspot.', pack: 'Prismatic Standard Pack' },
         { id: 'reverse', name: 'Reverse Holo', scope: 'Frame + text', recipe: 'Composite rainbow layers everywhere except the artwork rectangle.', pack: 'Mirror Vault Pack' },
         { id: 'etched', name: 'Foil-Etched', scope: 'Frame-led', recipe: 'Cached metallic noise mask + muted silver/gold border gradients.', pack: 'Dwarven Forge Pack' },
-        { id: 'textured', name: 'Textured Foil', scope: 'Art + frame', recipe: 'Low-resolution relief mask with contour highlights tied to light angle.', pack: 'Ancient Relief Pack' },
+        { id: 'textured', name: 'Textured Foil', scope: 'Art + frame', recipe: 'Four-pixel micro-emboss field with tiny highlight/shadow dots and fine crosshatching.', pack: 'Ancient Relief Pack' },
         { id: 'galaxy', name: 'Galaxy Foil', scope: 'Full card', recipe: 'Seeded star sprites, diffraction colors, and one moving hotspot.', pack: 'Observatory Pack' },
         { id: 'surge', name: 'Surge Foil', scope: 'Full card', recipe: 'Layered diagonal streak masks translated against pointer movement.', pack: 'God Wars Surge Pack' },
         { id: 'halo', name: 'Halo Foil', scope: 'Full card', recipe: 'Concentric elliptical bands centered on the virtual light source.', pack: 'Planar Halo Pack' },
