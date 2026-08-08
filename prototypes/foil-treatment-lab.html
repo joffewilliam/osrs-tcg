@@ -138,8 +138,7 @@
       text-transform: uppercase;
     }
 
-    .rarity-key-item,
-    .rarity-lockup {
+    .rarity-key-item {
       display: inline-flex;
       gap: 7px;
       align-items: center;
@@ -290,7 +289,7 @@
       position: absolute;
       inset: 0;
       display: grid;
-      grid-template-rows: 30px 112px 31px 1fr 27px;
+      grid-template-rows: 24px 120px 25px 1fr 27px;
       gap: 3px;
       padding: 9px;
       overflow: hidden;
@@ -331,9 +330,9 @@
     }
 
     .card-title {
-      padding: 0 7px;
+      padding: 0 6px;
       font-family: Georgia, "Times New Roman", serif;
-      font-size: .79rem;
+      font-size: .72rem;
       font-weight: 700;
       letter-spacing: .025em;
       text-shadow: 0 1px #000;
@@ -394,34 +393,26 @@
       mix-blend-mode: color-dodge;
     }
 
-    .rarity-line {
+    .type-line {
       grid-template-columns: 1fr auto;
-      padding: 0 7px;
+      padding: 0 6px;
       background:
         linear-gradient(90deg, rgba(242,201,76,.18), transparent 44%),
         linear-gradient(180deg, #342b1d, #1d1b16);
     }
 
-    .rarity-line .rarity-symbol {
-      width: 15px;
-      height: 15px;
+    .type-line .rarity-symbol {
+      width: 13px;
+      height: 13px;
     }
 
-    .rarity-name {
-      color: #ffe798;
-      font-size: .63rem;
-      font-weight: 900;
-      letter-spacing: .13em;
-      text-transform: uppercase;
+    .card-type {
+      color: #eee4c9;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: .61rem;
+      font-weight: 700;
+      letter-spacing: .025em;
       text-shadow: 0 1px #000;
-    }
-
-    .rarity-rank {
-      color: #a99f83;
-      font-size: .49rem;
-      font-weight: 800;
-      letter-spacing: .08em;
-      text-transform: uppercase;
     }
 
     .rules-copy {
@@ -870,9 +861,9 @@
           <span class="card-frame">
             <span class="card-section card-title">Twisted Bow</span>
             <span class="art-window"><img src="assets/twisted-bow.png" alt=""></span>
-            <span class="card-section rarity-line">
-              <span class="rarity-lockup"><span class="rarity-symbol rarity-symbol--godly" aria-hidden="true"></span><span class="rarity-name">Godly</span></span>
-              <span class="rarity-rank">Tier VII</span>
+            <span class="card-section type-line">
+              <span class="card-type">Weapon — Bow</span>
+              <span class="rarity-symbol rarity-symbol--godly" role="img" aria-label="Godly rarity"></span>
             </span>
             <span class="card-section rules-copy">A mystical bow carved from the twisted remains of the Great Olm.</span>
             <span class="card-section score-line">
