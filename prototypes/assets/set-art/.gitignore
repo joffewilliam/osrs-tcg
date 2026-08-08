@@ -1,0 +1,4 @@
+# Keep downloaded source files local; the optimized prototype assets are WebP.
+*.gif
+*.jpg
+*.png
