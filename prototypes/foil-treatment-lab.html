@@ -19,8 +19,8 @@
       --foil-strength: .40;
       --map-strength: .45;
       --map-veil: .64;
-      --chrome-alpha: .83;
-      --chrome-alpha-strong: .85;
+      --box-opacity: .75;
+      --text-clarity: 1;
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
 
@@ -46,7 +46,7 @@
 
     .lab-header {
       display: grid;
-      grid-template-columns: minmax(0, 1fr) auto;
+      grid-template-columns: minmax(0, 1fr);
       gap: 22px;
       align-items: end;
       margin-bottom: 28px;
@@ -80,13 +80,21 @@
     }
 
     .controls {
+      position: sticky;
+      top: 12px;
+      z-index: 100;
       display: grid;
-      grid-template-columns: repeat(3, minmax(150px, 210px));
+      grid-template-columns: repeat(4, minmax(120px, 155px)) auto;
       gap: 12px;
       align-items: end;
+      width: fit-content;
+      max-width: 100%;
+      margin: -12px 0 18px auto;
       padding: 14px;
       border: 1px solid var(--line);
-      background: rgba(25, 28, 26, .88);
+      background: rgba(25, 28, 26, .92);
+      box-shadow: 0 12px 30px rgba(0,0,0,.38);
+      backdrop-filter: blur(12px);
     }
 
     .range-field {
@@ -101,7 +109,7 @@
     input[type="range"] { accent-color: var(--gold); }
 
     .reset-button {
-      grid-column: 1 / -1;
+      grid-column: auto;
       min-height: 38px;
       padding: 8px 13px;
       color: var(--ink);
@@ -690,8 +698,8 @@
       border: 1px solid rgba(228,198,127,.58);
       background: linear-gradient(
         180deg,
-        rgb(61 50 34 / var(--chrome-alpha)),
-        rgb(35 31 24 / var(--chrome-alpha-strong))
+        rgb(61 50 34 / var(--box-opacity)),
+        rgb(35 31 24 / var(--box-opacity))
       );
       box-shadow: inset 0 0 0 1px rgba(0,0,0,.16);
     }
@@ -703,6 +711,14 @@
       font-weight: 700;
       letter-spacing: .025em;
       text-shadow: 0 1px 2px #000, 0 0 4px rgba(0,0,0,.9);
+    }
+
+    .card-title-text,
+    .card-type,
+    .rules-text,
+    .power-score,
+    .type-line .rarity-symbol {
+      opacity: var(--text-clarity);
     }
 
     .art-window {
@@ -818,8 +834,8 @@
         linear-gradient(90deg, rgba(242,201,76,.18), transparent 44%),
         linear-gradient(
           180deg,
-          rgb(52 43 29 / var(--chrome-alpha)),
-          rgb(29 27 22 / var(--chrome-alpha-strong))
+          rgb(52 43 29 / var(--box-opacity)),
+          rgb(29 27 22 / var(--box-opacity))
         );
     }
 
@@ -853,8 +869,8 @@
       padding: 0 6px;
       background: linear-gradient(
         90deg,
-        rgb(24 26 24 / var(--chrome-alpha-strong)),
-        rgb(48 40 25 / var(--chrome-alpha))
+        rgb(24 26 24 / var(--box-opacity)),
+        rgb(48 40 25 / var(--box-opacity))
       );
     }
 
@@ -1134,7 +1150,7 @@
       opacity: calc(var(--foil-strength) * .66);
     }
     .foil-card[data-treatment="raised"] .card-title {
-      z-index: 8;
+      z-index: 9;
       color: #fff0ba;
       text-shadow: 0 1px 0 #68480a, 0 2px 2px #000, 0 -1px 0 #fff2b1;
     }
@@ -1250,11 +1266,14 @@
       line-height: 1.5;
     }
 
-    @media (max-width: 760px) {
+    @media (max-width: 900px) {
       .lab-shell { padding-inline: 14px; }
       .lab-header { grid-template-columns: 1fr; }
       .controls { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .reset-button { grid-column: 1 / -1; }
+    }
+
+    @media (max-width: 760px) {
       .pack-system-header,
       .pack-math-grid { grid-template-columns: 1fr; }
       .pack-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -1280,19 +1299,23 @@
         <h1>Foil Treatment Lab</h1>
         <p class="intro">Drag any card to tilt it. The printed pattern stays locked to the card while a broad holographic spectrum and specular highlight travel across it. Every treatment can be rebuilt with Java2D clipping, gradients, alpha composites, cached texture masks, and the existing shared card renderer.</p>
       </div>
-      <div class="controls" aria-label="Foil lab controls">
+    </header>
+
+    <div class="controls" aria-label="Foil lab controls">
         <label class="range-field" for="foilStrength">Foil intensity <span id="strengthValue">40%</span>
           <input id="foilStrength" type="range" min="20" max="100" value="40">
         </label>
         <label class="range-field" for="mapStrength">Map under foil <span id="mapStrengthValue">45%</span>
           <input id="mapStrength" type="range" min="0" max="100" value="45">
         </label>
-        <label class="range-field" for="chromeClarity">Card text clarity <span id="chromeClarityValue">75%</span>
-          <input id="chromeClarity" type="range" min="0" max="100" value="75">
+        <label class="range-field" for="textClarity">Text clarity <span id="textClarityValue">100%</span>
+          <input id="textClarity" type="range" min="0" max="100" value="100">
+        </label>
+        <label class="range-field" for="boxOpacity">Box fill opacity <span id="boxOpacityValue">75%</span>
+          <input id="boxOpacity" type="range" min="0" max="100" value="75">
         </label>
         <button class="reset-button" id="resetTilt" type="button">Reset all tilts</button>
-      </div>
-    </header>
+    </div>
 
     <p class="status-line"><strong>20 renderable finishes</strong><span>Fixed pattern + moving holo sheen</span><span>Drag with mouse or touch</span><span>Arrow keys tilt focused cards</span><span>No shader or GPU plugin required</span></p>
 
@@ -1355,13 +1378,13 @@
         <button class="foil-card" type="button">
           <span class="card-frame">
             <span class="set-stock-art" aria-hidden="true"><img src="" alt=""></span>
-            <span class="card-section card-title">Twisted Bow</span>
+            <span class="card-section card-title"><span class="card-title-text">Twisted Bow</span></span>
             <span class="art-window"><img class="area-art-image" src="" alt=""><img class="card-art-image" src="assets/twisted-bow.png" alt=""><span class="area-art" aria-hidden="true"></span></span>
             <span class="card-section type-line">
               <span class="card-type">Weapon — Bow</span>
               <span class="rarity-symbol rarity-symbol--godly" role="img" aria-label="Godly rarity"></span>
             </span>
-            <span class="card-section rules-copy">A mystical bow carved from the twisted remains of the Great Olm.</span>
+            <span class="card-section rules-copy"><span class="rules-text">A mystical bow carved from the twisted remains of the Great Olm.</span></span>
             <span class="card-section score-line">
               <span class="power-score"><span class="power-label">Power</span><strong>1,250,000</strong></span>
             </span>
@@ -1538,8 +1561,10 @@
       const strengthValue = document.getElementById('strengthValue');
       const mapStrength = document.getElementById('mapStrength');
       const mapStrengthValue = document.getElementById('mapStrengthValue');
-      const chromeClarity = document.getElementById('chromeClarity');
-      const chromeClarityValue = document.getElementById('chromeClarityValue');
+      const textClarity = document.getElementById('textClarity');
+      const textClarityValue = document.getElementById('textClarityValue');
+      const boxOpacity = document.getElementById('boxOpacity');
+      const boxOpacityValue = document.getElementById('boxOpacityValue');
       const setSelect = document.getElementById('setSelect');
       const packCount = document.getElementById('packCount');
       const oddsTableBody = document.getElementById('oddsTableBody');
@@ -1719,12 +1744,16 @@
         mapStrengthValue.textContent = `${value}%`;
       });
 
-      chromeClarity.addEventListener('input', () => {
-        const value = Number(chromeClarity.value);
-        const normalized = value / 100;
-        root.style.setProperty('--chrome-alpha', (.30 + normalized * .70).toFixed(2));
-        root.style.setProperty('--chrome-alpha-strong', (.38 + normalized * .62).toFixed(2));
-        chromeClarityValue.textContent = `${value}%`;
+      textClarity.addEventListener('input', () => {
+        const value = Number(textClarity.value);
+        root.style.setProperty('--text-clarity', (value / 100).toFixed(2));
+        textClarityValue.textContent = `${value}%`;
+      });
+
+      boxOpacity.addEventListener('input', () => {
+        const value = Number(boxOpacity.value);
+        root.style.setProperty('--box-opacity', (value / 100).toFixed(2));
+        boxOpacityValue.textContent = `${value}%`;
       });
 
       document.getElementById('resetTilt').addEventListener('click', () => {
