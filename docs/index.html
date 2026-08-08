@@ -5,6 +5,30 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>OSRS TCG Foil Treatment Lab</title>
   <style>
+    @font-face {
+      font-family: "RuneScape UI";
+      src: url("assets/fonts/runescape.ttf") format("truetype");
+      font-style: normal;
+      font-weight: 400;
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: "RuneScape UI";
+      src: url("assets/fonts/runescape_bold.ttf") format("truetype");
+      font-style: normal;
+      font-weight: 700;
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: "RuneScape UI Small";
+      src: url("assets/fonts/runescape_small.ttf") format("truetype");
+      font-style: normal;
+      font-weight: 400;
+      font-display: swap;
+    }
+
     :root {
       color-scheme: dark;
       --page: #0f1110;
@@ -426,7 +450,7 @@
       border: 1px solid var(--sim-set-line, var(--gold));
       background: rgba(10,12,10,.76);
       box-shadow: 0 5px 18px rgba(0,0,0,.55);
-      font-family: Georgia, "Times New Roman", serif;
+      font-family: "RuneScape UI", sans-serif;
       font-size: clamp(1rem, 2.2vw, 1.35rem);
       font-weight: 700;
       line-height: 1.08;
@@ -438,7 +462,7 @@
       display: block;
       margin-top: 5px;
       color: var(--gold);
-      font-family: system-ui, sans-serif;
+      font-family: "RuneScape UI Small", sans-serif;
       font-size: .55rem;
       font-weight: 800;
       letter-spacing: .16em;
@@ -534,7 +558,7 @@
       content: "OSRS\A TCG";
       white-space: pre;
       color: var(--gold);
-      font-family: Georgia, "Times New Roman", serif;
+      font-family: "RuneScape UI", sans-serif;
       font-size: 1.05rem;
       font-weight: 800;
       line-height: .95;
@@ -966,7 +990,7 @@
       bottom: 14px;
       width: 126px;
       color: currentColor;
-      font-family: Georgia, "Times New Roman", serif;
+      font-family: "RuneScape UI", sans-serif;
       font-size: 6.5rem;
       font-weight: 700;
       line-height: .75;
@@ -983,6 +1007,7 @@
       overflow: hidden;
       color: currentColor;
       font-size: .46rem;
+      font-family: "RuneScape UI Small", sans-serif;
       font-weight: 900;
       letter-spacing: .16em;
       text-overflow: ellipsis;
@@ -1134,9 +1159,10 @@
 
     .card-title {
       padding: 0 6px;
-      font-family: Georgia, "Times New Roman", serif;
+      font-family: "RuneScape UI", sans-serif;
       font-size: .72rem;
       font-weight: 700;
+      line-height: 1;
       letter-spacing: .025em;
       text-shadow: 0 1px 2px #000, 0 0 4px rgba(0,0,0,.9);
     }
@@ -1274,7 +1300,7 @@
 
     .card-type {
       color: #eee4c9;
-      font-family: Georgia, "Times New Roman", serif;
+      font-family: "RuneScape UI", sans-serif;
       font-size: .61rem;
       font-weight: 700;
       letter-spacing: .025em;
@@ -1285,7 +1311,7 @@
       align-content: center;
       padding: 9px 8px;
       color: #dedacb;
-      font-family: Georgia, "Times New Roman", serif;
+      font-family: "RuneScape UI Small", sans-serif;
       font-size: .60rem;
       line-height: 1.25;
       text-shadow: 0 1px 2px #000, 0 0 4px rgba(0,0,0,.9);
@@ -1305,12 +1331,14 @@
     .power-score {
       display: inline-flex;
       gap: 6px;
-      align-items: baseline;
+      align-items: center;
+      line-height: 1;
       white-space: nowrap;
     }
 
     .power-label {
       color: #bdad7d;
+      font-family: "RuneScape UI Small", sans-serif;
       font-size: .46rem;
       font-weight: 900;
       letter-spacing: .09em;
@@ -1320,8 +1348,11 @@
 
     .power-score strong {
       color: #ffe58d;
-      font-family: Georgia, "Times New Roman", serif;
+      font-family: "RuneScape UI", sans-serif;
       font-size: .62rem;
+      font-variant-numeric: tabular-nums;
+      font-feature-settings: "tnum" 1;
+      line-height: 1;
       letter-spacing: -.02em;
       text-shadow: 0 1px 2px #000, 0 0 4px rgba(0,0,0,.9);
     }
@@ -1740,8 +1771,16 @@
     .sim-card.foil-card .sim-card-face::before,
     .sim-card.foil-card .sim-card-face::after { display: none; }
 
+    .sim-card.foil-card:not(.is-foil) .art-window::after,
+    .sim-card.foil-card:not(.is-foil) .card-frame::after,
+    .sim-card.foil-card:not(.is-foil) .foil-effect,
+    .sim-card.foil-card:not(.is-foil) .foil-detail { display: none; }
+
     .sim-card.foil-card .sim-new-badge,
-    .sim-card.foil-card .sim-foil-badge { top: 43px; }
+    .sim-card.foil-card .sim-foil-badge {
+      top: 43px;
+      font-family: "RuneScape UI Small", sans-serif;
+    }
 
     .sim-card.foil-card .sim-foil-badge {
       max-width: 112px;
