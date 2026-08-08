@@ -119,6 +119,81 @@
 
     .status-line strong { color: var(--green); }
 
+    .rarity-key {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px 18px;
+      align-items: center;
+      margin: 0 0 20px;
+      padding: 11px 14px;
+      border: 1px solid rgba(216,185,104,.22);
+      background: rgba(25,28,26,.62);
+    }
+
+    .rarity-key-label {
+      color: var(--gold);
+      font-size: .69rem;
+      font-weight: 800;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+
+    .rarity-key-item,
+    .rarity-lockup {
+      display: inline-flex;
+      gap: 7px;
+      align-items: center;
+    }
+
+    .rarity-key-item {
+      color: var(--muted);
+      font-size: .7rem;
+      white-space: nowrap;
+    }
+
+    .rarity-symbol {
+      position: relative;
+      display: inline-block;
+      flex: 0 0 auto;
+      width: 14px;
+      height: 14px;
+      color: #d8d8d2;
+      background: currentColor;
+      box-shadow: 0 0 5px color-mix(in srgb, currentColor 55%, transparent);
+    }
+
+    .rarity-symbol--common { color: #c6c8c5; border-radius: 50%; }
+    .rarity-symbol--uncommon { color: #4ed47b; transform: rotate(45deg) scale(.78); }
+    .rarity-symbol--rare {
+      color: #4fafff;
+      clip-path: polygon(50% 0, 61% 35%, 98% 35%, 68% 57%, 79% 94%, 50% 72%, 21% 94%, 32% 57%, 2% 35%, 39% 35%);
+    }
+    .rarity-symbol--epic {
+      color: #b066e8;
+      clip-path: polygon(50% 0, 60% 39%, 100% 50%, 60% 61%, 50% 100%, 40% 61%, 0 50%, 40% 39%);
+    }
+    .rarity-symbol--legendary {
+      color: #ef5b50;
+      clip-path: polygon(25% 7%, 75% 7%, 100% 50%, 75% 93%, 25% 93%, 0 50%);
+    }
+    .rarity-symbol--mythic {
+      color: #ff78c9;
+      clip-path: polygon(0 28%, 25% 54%, 50% 9%, 75% 54%, 100% 28%, 86% 91%, 14% 91%);
+    }
+    .rarity-symbol--godly {
+      color: #f2c94c;
+      clip-path: polygon(50% 0, 61% 28%, 85% 15%, 72% 39%, 100% 50%, 72% 61%, 85% 85%, 61% 72%, 50% 100%, 39% 72%, 15% 85%, 28% 61%, 0 50%, 28% 39%, 15% 15%, 39% 28%);
+      filter: drop-shadow(0 0 3px rgba(242,201,76,.7));
+    }
+
+    .rarity-symbol--godly::after {
+      content: "";
+      position: absolute;
+      inset: 5px;
+      border-radius: 50%;
+      background: #fff4b5;
+    }
+
     .treatment-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(265px, 1fr));
@@ -215,7 +290,7 @@
       position: absolute;
       inset: 0;
       display: grid;
-      grid-template-rows: 30px 118px 27px 1fr 24px;
+      grid-template-rows: 30px 112px 31px 1fr 27px;
       gap: 3px;
       padding: 9px;
       overflow: hidden;
@@ -319,12 +394,33 @@
       mix-blend-mode: color-dodge;
     }
 
-    .tier-line {
-      place-items: center;
-      color: #f5d06f;
-      font-size: .66rem;
+    .rarity-line {
+      grid-template-columns: 1fr auto;
+      padding: 0 7px;
+      background:
+        linear-gradient(90deg, rgba(242,201,76,.18), transparent 44%),
+        linear-gradient(180deg, #342b1d, #1d1b16);
+    }
+
+    .rarity-line .rarity-symbol {
+      width: 15px;
+      height: 15px;
+    }
+
+    .rarity-name {
+      color: #ffe798;
+      font-size: .63rem;
+      font-weight: 900;
+      letter-spacing: .13em;
+      text-transform: uppercase;
+      text-shadow: 0 1px #000;
+    }
+
+    .rarity-rank {
+      color: #a99f83;
+      font-size: .49rem;
       font-weight: 800;
-      letter-spacing: .16em;
+      letter-spacing: .08em;
       text-transform: uppercase;
     }
 
@@ -338,14 +434,41 @@
     }
 
     .score-line {
-      grid-template-columns: 1fr auto;
+      grid-template-columns: minmax(0, 1fr) auto;
       padding: 0 7px;
-      color: #dedacb;
-      font-size: .61rem;
-      font-weight: 700;
+      background: linear-gradient(90deg, #181a18, #302819);
     }
 
-    .score-line strong { color: #f3cf68; }
+    .collector-code {
+      color: #9f9f95;
+      font-size: .45rem;
+      font-weight: 800;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+
+    .power-score {
+      display: inline-flex;
+      gap: 3px;
+      align-items: baseline;
+      white-space: nowrap;
+    }
+
+    .power-label {
+      color: #bdad7d;
+      font-size: .42rem;
+      font-weight: 900;
+      letter-spacing: .09em;
+      text-transform: uppercase;
+    }
+
+    .power-score strong {
+      color: #ffe58d;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: .64rem;
+      letter-spacing: -.02em;
+      text-shadow: 0 1px #000;
+    }
 
     .foil-effect,
     .foil-detail {
@@ -725,6 +848,16 @@
     </header>
 
     <p class="status-line"><strong>20 renderable finishes</strong><span>Fixed pattern + moving holo sheen</span><span>Drag with mouse or touch</span><span>Arrow keys tilt focused cards</span><span>No shader or GPU plugin required</span></p>
+    <section class="rarity-key" aria-label="OSRS TCG rarity symbols">
+      <span class="rarity-key-label">Rarity marks</span>
+      <span class="rarity-key-item"><span class="rarity-symbol rarity-symbol--common" aria-hidden="true"></span>Common</span>
+      <span class="rarity-key-item"><span class="rarity-symbol rarity-symbol--uncommon" aria-hidden="true"></span>Uncommon</span>
+      <span class="rarity-key-item"><span class="rarity-symbol rarity-symbol--rare" aria-hidden="true"></span>Rare</span>
+      <span class="rarity-key-item"><span class="rarity-symbol rarity-symbol--epic" aria-hidden="true"></span>Epic</span>
+      <span class="rarity-key-item"><span class="rarity-symbol rarity-symbol--legendary" aria-hidden="true"></span>Legendary</span>
+      <span class="rarity-key-item"><span class="rarity-symbol rarity-symbol--mythic" aria-hidden="true"></span>Mythic</span>
+      <span class="rarity-key-item"><span class="rarity-symbol rarity-symbol--godly" aria-hidden="true"></span>Godly</span>
+    </section>
     <section class="treatment-grid" id="treatmentGrid" aria-label="Foil treatment comparison"></section>
     <p class="source-note">Treatment names are a design reference to physical TCG finishes. The OSRS variants should use original pack names, pull rates, and visual tuning. “Reverse holo” is included at request even though it is more strongly associated with other TCGs. Twisted Bow artwork is stored locally from the OSRS Wiki URL already cataloged in <code>Card.json</code>.</p>
   </main>
@@ -737,9 +870,15 @@
           <span class="card-frame">
             <span class="card-section card-title">Twisted Bow</span>
             <span class="art-window"><img src="assets/twisted-bow.png" alt=""></span>
-            <span class="card-section tier-line">Godly</span>
-            <span class="card-section rules-copy">A mystical bow carved from the twisted remains of the Great Olm. Its surface catches impossible colors.</span>
-            <span class="card-section score-line"><span>Score</span><strong>1,250,000</strong></span>
+            <span class="card-section rarity-line">
+              <span class="rarity-lockup"><span class="rarity-symbol rarity-symbol--godly" aria-hidden="true"></span><span class="rarity-name">Godly</span></span>
+              <span class="rarity-rank">Tier VII</span>
+            </span>
+            <span class="card-section rules-copy">A mystical bow carved from the twisted remains of the Great Olm.</span>
+            <span class="card-section score-line">
+              <span class="collector-code">OSRS · TBOW</span>
+              <span class="power-score"><span class="power-label">Power</span><strong>1.25M</strong></span>
+            </span>
           </span>
           <span class="foil-effect" aria-hidden="true"></span>
           <span class="foil-detail" aria-hidden="true"></span>
