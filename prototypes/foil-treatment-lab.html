@@ -731,6 +731,22 @@
       font-size: .7rem;
     }
 
+    .sim-set-select {
+      display: inline-flex;
+      gap: 7px;
+      align-items: center;
+      color: var(--muted);
+      font-size: .7rem;
+    }
+
+    .sim-set-select select {
+      min-height: 38px;
+      padding: 7px 28px 7px 9px;
+      color: var(--ink);
+      border: 1px solid var(--gold-dim);
+      background: #29271f;
+    }
+
     @keyframes packShimmer { 0%,100% { background-position: 180% 0, 0 0; } 50% { background-position: -80% 0, 0 0; } }
     @keyframes packReady { 0%,100% { transform: scale(var(--pack-zoom, 1)) rotate(-.5deg); } 50% { transform: scale(calc(var(--pack-zoom, 1) + .025)) rotate(.5deg); } }
     @keyframes apexBurst { 0% { opacity: 0; transform: scale(.55); } 22%,58% { opacity: 1; } 100% { opacity: 0; transform: scale(1.22); } }
@@ -1736,11 +1752,15 @@
 
     .sim-card.foil-card.is-dealt {
       opacity: 1;
-      transform: rotateX(var(--sim-rx, 0deg)) rotateY(var(--sim-ry, 0deg)) scale(1);
+      transform: rotateX(var(--rx)) rotateY(var(--ry)) scale(1);
     }
 
     .sim-card.foil-card.is-dealt.is-revealed {
       transition: opacity .25s ease, transform 60ms linear;
+    }
+
+    .sim-card.foil-card.is-dealt.is-revealed:hover .sim-card-canonical {
+      box-shadow: calc(var(--ry) / 1deg * -1px) calc(var(--rx) / 1deg * 1px + 20px) 34px rgba(0,0,0,.52);
     }
     .sim-card.foil-card.is-next { filter: drop-shadow(0 0 9px color-mix(in srgb, var(--sim-rarity) 75%, transparent)); }
     .sim-card.foil-card .sim-card-face {
@@ -1994,6 +2014,14 @@
     .sim-card-canonical { box-shadow: none; }
     .sim-status { color: #333; }
     .sim-force-apex { color: #333; }
+    .sim-set-select { color: #333; }
+    .sim-set-select select {
+      color: #111;
+      border: 2px solid #111;
+      border-radius: 0;
+      background: #fff;
+      font-weight: 700;
+    }
 
     .rarity-key {
       border: 2px solid #111;
@@ -2162,7 +2190,7 @@
       </header>
 
       <div class="pack-sim-stage" id="packSimStage" tabindex="0" aria-label="Pack reveal stage">
-        <button class="sim-pack" id="simPack" type="button" aria-label="Selected pack. Buy the pack to begin.">
+        <button class="sim-pack" id="simPack" type="button" aria-label="Selected pack. Click to buy for 2,500 credits.">
           <img class="sim-pack-art" id="simPackArt" src="assets/set-scenes/gielinor.webp" alt="">
           <span class="sim-pack-sheen" aria-hidden="true"></span>
           <span class="sim-pack-label"><span id="simPackName">Gielinor Core Set</span><span class="sim-pack-subtitle">10-card booster</span></span>
@@ -2173,10 +2201,10 @@
 
       <p class="sim-status" id="simStatus">Loading the plugin's complete card catalog...</p>
       <div class="sim-actions">
-        <button class="sim-action sim-action--primary" id="buyPack" type="button" disabled>Loading catalog...</button>
         <button class="sim-action" id="revealAll" type="button" disabled>Reveal all</button>
         <button class="sim-action" id="closeReveal" type="button" hidden>Open another pack</button>
         <label class="sim-force-apex"><input id="forceApex" type="checkbox"> Force Apex demo</label>
+        <label class="sim-set-select" for="simSetSelect">Pack set <select id="simSetSelect"></select></label>
         <button class="sim-action" id="resetSimCredits" type="button">Reset credits</button>
       </div>
     </section>
@@ -2395,6 +2423,7 @@
       const boxOpacity = document.getElementById('boxOpacity');
       const boxOpacityValue = document.getElementById('boxOpacityValue');
       const setSelect = document.getElementById('setSelect');
+      const simSetSelect = document.getElementById('simSetSelect');
       const packCount = document.getElementById('packCount');
       const oddsTableBody = document.getElementById('oddsTableBody');
       const packOpening = document.getElementById('packOpening');
@@ -2405,7 +2434,6 @@
       const simCardGrid = document.getElementById('simCardGrid');
       const simStatus = document.getElementById('simStatus');
       const simCredits = document.getElementById('simCredits');
-      const buyPackButton = document.getElementById('buyPack');
       const revealAllButton = document.getElementById('revealAll');
       const closeRevealButton = document.getElementById('closeReveal');
       const forceApex = document.getElementById('forceApex');
@@ -2789,20 +2817,14 @@
           const bounds = button.getBoundingClientRect();
           const x = Math.max(0, Math.min(1, (event.clientX - bounds.left) / bounds.width));
           const y = Math.max(0, Math.min(1, (event.clientY - bounds.top) / bounds.height));
-          button.style.setProperty('--mx', `${(x * 100).toFixed(1)}%`);
-          button.style.setProperty('--my', `${(y * 100).toFixed(1)}%`);
           button.style.setProperty('--sim-mx', `${(x * 100).toFixed(1)}%`);
           button.style.setProperty('--sim-my', `${(y * 100).toFixed(1)}%`);
-          button.style.setProperty('--sim-rx', `${((.5 - y) * 12).toFixed(2)}deg`);
-          button.style.setProperty('--sim-ry', `${((x - .5) * 14).toFixed(2)}deg`);
+          setTilt(button, x, y);
         });
         button.addEventListener('pointerleave', () => {
-          button.style.setProperty('--mx', '50%');
-          button.style.setProperty('--my', '50%');
           button.style.setProperty('--sim-mx', '50%');
           button.style.setProperty('--sim-my', '50%');
-          button.style.setProperty('--sim-rx', '0deg');
-          button.style.setProperty('--sim-ry', '0deg');
+          setTilt(button, .5, .5);
         });
         slot.appendChild(button);
         window.requestAnimationFrame(() => syncSimCardScale(button));
@@ -2903,7 +2925,7 @@
         simPhase = 'ready';
         packSimStage.classList.remove('has-cards');
         setSelect.disabled = true;
-        buyPackButton.disabled = true;
+        simSetSelect.disabled = true;
         revealAllButton.disabled = true;
         closeRevealButton.hidden = true;
         simCardGrid.replaceChildren();
@@ -2921,14 +2943,14 @@
         simRevealedCount = 0;
         simPhase = 'idle';
         setSelect.disabled = false;
-        buyPackButton.disabled = false;
+        simSetSelect.disabled = false;
         revealAllButton.disabled = true;
         closeRevealButton.hidden = true;
         simCardGrid.replaceChildren();
         simPack.classList.remove('is-hidden', 'is-opening', 'is-ready');
         packSimStage.classList.remove('has-cards');
-        simPack.setAttribute('aria-label', 'Selected pack. Buy the pack to begin.');
-        simStatus.textContent = 'Choose a set or buy another ten-card pack.';
+        simPack.setAttribute('aria-label', `Selected pack. Click to buy for ${PACK_PRICE.toLocaleString()} credits.`);
+        simStatus.textContent = 'Choose a set or click the pack to buy another ten-card pack.';
         updateSimPackPreview();
       };
 
@@ -2944,9 +2966,8 @@
             simCatalog = catalog.filter((card) => card && card.name && card.imageUrl);
             buildTierPools(simCatalog);
             simPhase = 'idle';
-            buyPackButton.disabled = false;
-            buyPackButton.textContent = `Buy pack - ${PACK_PRICE.toLocaleString()} credits`;
-            simStatus.textContent = `${simCatalog.length.toLocaleString()} plugin cards loaded. Choose a set and buy a pack.`;
+            simPack.setAttribute('aria-label', `Selected pack. Click to buy for ${PACK_PRICE.toLocaleString()} credits.`);
+            simStatus.textContent = `${simCatalog.length.toLocaleString()} plugin cards loaded. Click the pack to buy it for ${PACK_PRICE.toLocaleString()} credits.`;
             updateSimPackPreview();
             return;
           } catch (error) {
@@ -2955,7 +2976,7 @@
         }
         simPhase = 'error';
         simStatus.textContent = `Card catalog could not load: ${lastError ? lastError.message : 'unknown error'}`;
-        buyPackButton.textContent = 'Catalog unavailable';
+        simPack.setAttribute('aria-label', 'Pack unavailable because the card catalog could not load.');
       };
 
       const renderProjection = () => {
@@ -3026,6 +3047,7 @@
         option.value = packSet.id;
         option.textContent = packSet.name;
         setSelect.appendChild(option);
+        simSetSelect.appendChild(option.cloneNode(true));
       });
 
       treatmentViews.forEach(({ treatment, panel }) => {
@@ -3037,18 +3059,28 @@
 
       document.getElementById('anyFoilRate').textContent = percent(BONUS_FOIL_RATE_PER_PACK);
       setSelect.value = 'gielinor';
-      setSelect.addEventListener('change', renderPackSet);
+      simSetSelect.value = setSelect.value;
+      setSelect.addEventListener('change', () => {
+        simSetSelect.value = setSelect.value;
+        renderPackSet();
+      });
+      simSetSelect.addEventListener('change', () => {
+        setSelect.value = simSetSelect.value;
+        renderPackSet();
+      });
       packCount.addEventListener('input', renderProjection);
       renderPackSet();
 
-      buyPackButton.addEventListener('click', readySimPack);
-      simPack.addEventListener('click', openSimPack);
+      simPack.addEventListener('click', () => {
+        if (simPhase === 'idle') readySimPack();
+        else if (simPhase === 'ready') openSimPack();
+      });
       revealAllButton.addEventListener('click', revealAllSimCards);
       closeRevealButton.addEventListener('click', closeSimReveal);
       document.getElementById('resetSimCredits').addEventListener('click', () => {
         simCreditsValue = SIM_STARTING_CREDITS;
         updateSimCredits();
-        if (simPhase === 'idle') simStatus.textContent = 'Simulator credits reset. Choose a set and buy a pack.';
+        if (simPhase === 'idle') simStatus.textContent = 'Simulator credits reset. Click the pack to buy it.';
       });
       packSimStage.addEventListener('contextmenu', (event) => {
         event.preventDefault();
