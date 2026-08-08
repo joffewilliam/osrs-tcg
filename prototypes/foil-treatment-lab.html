@@ -1791,6 +1791,254 @@
       line-height: 1.5;
     }
 
+    /* Presentation shell: intentionally plain, square, and prototype-like. */
+    :root {
+      color-scheme: light;
+      --page: #ecece6;
+      --panel: #ffffff;
+      --panel-2: #deded7;
+      --line: #111111;
+      --gold: #111111;
+      --gold-dim: #111111;
+      --ink: #111111;
+      --muted: #4b4b47;
+      --green: #12672f;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    body {
+      color: var(--ink);
+      background: var(--page);
+      font-size: 15px;
+      line-height: 1.45;
+    }
+
+    .lab-shell {
+      width: min(1360px, 100%);
+      padding-top: 24px;
+    }
+
+    .lab-header {
+      margin-bottom: 22px;
+      padding-bottom: 18px;
+      border-bottom: 4px solid #111;
+    }
+
+    .eyebrow {
+      color: #111;
+      font-size: .72rem;
+      letter-spacing: .08em;
+    }
+
+    h1,
+    .pack-system h2,
+    .pack-opening h2,
+    .panel-heading h2 {
+      color: #111;
+      font-family: Arial, Helvetica, sans-serif;
+      font-weight: 800;
+      letter-spacing: -.025em;
+    }
+
+    h1 {
+      max-width: none;
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      line-height: 1;
+      text-transform: uppercase;
+    }
+
+    .intro { max-width: 900px; color: #333; }
+
+    .controls {
+      top: 0;
+      grid-template-columns: repeat(4, minmax(120px, 1fr)) auto;
+      width: 100%;
+      margin: 0 0 22px;
+      padding: 12px;
+      border: 2px solid #111;
+      background: #fff;
+      box-shadow: none;
+      backdrop-filter: none;
+    }
+
+    .range-field { color: #333; font-size: .78rem; font-weight: 700; }
+    .range-field span { color: #111; }
+    input[type="range"] { accent-color: #111; }
+
+    .reset-button,
+    .sim-action {
+      color: #111;
+      border: 2px solid #111;
+      border-radius: 0;
+      background: #fff;
+      box-shadow: none;
+      font-weight: 700;
+    }
+
+    .reset-button:hover,
+    .sim-action:hover:not(:disabled) { color: #fff; background: #111; }
+    .sim-action--primary { color: #fff; background: #111; }
+    .sim-action--primary:hover:not(:disabled) { color: #111; background: #fff; }
+    .sim-action:disabled { color: #777; background: #ddd; }
+
+    .status-line {
+      margin-bottom: 22px;
+      padding: 10px 0;
+      border-block: 1px solid #111;
+      color: #333;
+    }
+
+    .status-line strong { color: #111; }
+
+    .pack-system,
+    .pack-opening {
+      margin-bottom: 22px;
+      padding: 18px;
+      border: 2px solid #111;
+      border-radius: 0;
+      background: #fff;
+      box-shadow: none;
+    }
+
+    .pack-system-copy,
+    .pack-opening-copy { color: #444; }
+
+    .pack-select-field { color: #111; }
+
+    .pack-select-field select,
+    .pack-count-field input {
+      color: #111;
+      border: 2px solid #111;
+      border-radius: 0;
+      background: #fff;
+    }
+
+    .pack-metrics {
+      gap: 2px;
+      border: 2px solid #111;
+      background: #111;
+    }
+
+    .pack-metric { background: #fff; }
+    .pack-metric-label { color: #555; }
+    .pack-metric strong { color: #111; font-family: Arial, Helvetica, sans-serif; }
+
+    .odds-table th,
+    .odds-table td { border-bottom-color: #bbb; }
+    .odds-table th { color: #111; border-bottom: 2px solid #111; }
+
+    .pack-projection {
+      border-left: 4px solid #111;
+      background: #eee;
+    }
+
+    .projection-line { color: #444; border-bottom-color: #aaa; }
+    .projection-line strong { color: #111; }
+    .formula-line { color: #333; }
+
+    .pack-opening {
+      --sim-set-line: #111;
+      --sim-set-glow: transparent;
+    }
+
+    .sim-balance {
+      color: #333;
+      border: 2px solid #111;
+      border-radius: 0;
+      background: #eee;
+    }
+
+    .sim-balance strong { color: #111; font-family: Arial, Helvetica, sans-serif; }
+
+    .pack-sim-stage {
+      border: 2px solid #111;
+      border-radius: 0;
+      background: #d8d8d1;
+    }
+
+    .pack-sim-stage::before { display: none; }
+
+    .sim-pack {
+      border: 2px solid #111;
+      border-radius: 0;
+      box-shadow: none;
+    }
+
+    .sim-pack::before,
+    .sim-pack::after {
+      height: 6%;
+      background: #111;
+      box-shadow: none;
+    }
+
+    .sim-pack-label {
+      color: #fff;
+      border: 2px solid #fff;
+      border-radius: 0;
+      background: #111;
+      box-shadow: none;
+    }
+
+    .sim-pack-subtitle { color: #fff; }
+    .sim-card.foil-card.is-next { filter: none; }
+    .sim-card-back { border-radius: 0; background: #111; box-shadow: none; }
+    .sim-card-back::after { color: #fff; text-shadow: none; }
+    .sim-card-canonical { box-shadow: none; }
+    .sim-status { color: #333; }
+    .sim-force-apex { color: #333; }
+
+    .rarity-key {
+      border: 2px solid #111;
+      border-radius: 0;
+      background: #fff;
+    }
+
+    .rarity-key-label { color: #111; }
+    .rarity-key-item { color: #333; }
+
+    .treatment-grid { gap: 16px; }
+
+    .treatment-panel {
+      padding: 14px;
+      border: 2px solid #111;
+      border-radius: 0;
+      background: #fff;
+      box-shadow: none;
+    }
+
+    .panel-heading {
+      padding-bottom: 10px;
+      border-bottom: 2px solid #111;
+    }
+
+    .scope {
+      padding: 3px 5px;
+      color: #fff;
+      background: #111;
+    }
+
+    .viewport {
+      border: 2px solid #111;
+      background: #deded7;
+    }
+
+    .recipe { color: #333; }
+    .recipe code { color: #111; }
+    .rate-line { color: #111; }
+    .pack-line { color: #333; border-top: 2px solid #111; }
+    .pack-line strong { color: #111; }
+    .treatment-panel.is-not-in-set .rate-line { color: #555; }
+    .treatment-panel.is-not-in-set .scope {
+      color: #111;
+      background: #ccc;
+    }
+
+    .source-note {
+      padding-top: 16px;
+      color: #333;
+      border-top: 2px solid #111;
+    }
+
     @media (max-width: 900px) {
       .lab-shell { padding-inline: 14px; }
       .lab-header { grid-template-columns: 1fr; }
