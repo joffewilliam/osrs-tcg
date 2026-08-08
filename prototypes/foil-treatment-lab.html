@@ -859,7 +859,7 @@
       perspective: 950px;
       touch-action: none;
       user-select: none;
-      cursor: grab;
+      cursor: crosshair;
     }
 
     .viewport.is-dragging { cursor: grabbing; }
@@ -894,8 +894,9 @@
       text-align: left;
     }
 
+    .viewport:hover .foil-card,
     .viewport.is-dragging .foil-card {
-      transition: box-shadow 80ms linear;
+      transition: transform 60ms linear, box-shadow 80ms linear;
       box-shadow: calc(var(--ry) / 1deg * -1px) calc(var(--rx) / 1deg * 1px + 20px) 34px rgba(0,0,0,.52);
     }
 
@@ -1733,7 +1734,14 @@
       transition: opacity .25s ease, transform .36s cubic-bezier(.2,.8,.2,1);
     }
 
-    .sim-card.foil-card.is-dealt { opacity: 1; transform: translate(0,0) scale(1); }
+    .sim-card.foil-card.is-dealt {
+      opacity: 1;
+      transform: rotateX(var(--sim-rx, 0deg)) rotateY(var(--sim-ry, 0deg)) scale(1);
+    }
+
+    .sim-card.foil-card.is-dealt.is-revealed {
+      transition: opacity .25s ease, transform 60ms linear;
+    }
     .sim-card.foil-card.is-next { filter: drop-shadow(0 0 9px color-mix(in srgb, var(--sim-rarity) 75%, transparent)); }
     .sim-card.foil-card .sim-card-face {
       display: block;
@@ -2104,7 +2112,7 @@
         <button class="reset-button" id="resetTilt" type="button">Reset all tilts</button>
     </div>
 
-    <p class="status-line"><strong>20 renderable finishes</strong><span>Fixed pattern + moving holo sheen</span><span>Drag with mouse or touch</span><span>Arrow keys tilt focused cards</span><span>No shader or GPU plugin required</span></p>
+    <p class="status-line"><strong>20 renderable finishes</strong><span>Fixed pattern + moving holo sheen</span><span>Move cursor or drag to tilt</span><span>Arrow keys tilt focused cards</span><span>No shader or GPU plugin required</span></p>
 
     <section class="pack-system" aria-labelledby="packSystemTitle">
       <header class="pack-system-header">
@@ -2435,7 +2443,7 @@
         panel.querySelector('.scope').textContent = treatment.scope;
         panel.querySelector('.recipe').innerHTML = treatment.recipe;
         card.dataset.treatment = treatment.id;
-        card.setAttribute('aria-label', `${treatment.name} preview. Drag or use arrow keys to tilt.`);
+        card.setAttribute('aria-label', `${treatment.name} preview. Move the cursor, drag, or use arrow keys to tilt.`);
         setTilt(card, .5, .5);
 
         let dragging = false;
@@ -2451,7 +2459,10 @@
           updateFromPointer(event);
         });
         viewport.addEventListener('pointermove', (event) => {
-          if (dragging) updateFromPointer(event);
+          if (event.pointerType === 'mouse' || dragging) updateFromPointer(event);
+        });
+        viewport.addEventListener('pointerleave', (event) => {
+          if (!dragging && event.pointerType === 'mouse') setTilt(card, .5, .5);
         });
         const finishDrag = (event) => {
           if (!dragging) return;
@@ -2776,8 +2787,22 @@
         button.addEventListener('pointermove', (event) => {
           if (!button.classList.contains('is-revealed')) return;
           const bounds = button.getBoundingClientRect();
-          button.style.setProperty('--mx', `${((event.clientX - bounds.left) / bounds.width * 100).toFixed(1)}%`);
-          button.style.setProperty('--my', `${((event.clientY - bounds.top) / bounds.height * 100).toFixed(1)}%`);
+          const x = Math.max(0, Math.min(1, (event.clientX - bounds.left) / bounds.width));
+          const y = Math.max(0, Math.min(1, (event.clientY - bounds.top) / bounds.height));
+          button.style.setProperty('--mx', `${(x * 100).toFixed(1)}%`);
+          button.style.setProperty('--my', `${(y * 100).toFixed(1)}%`);
+          button.style.setProperty('--sim-mx', `${(x * 100).toFixed(1)}%`);
+          button.style.setProperty('--sim-my', `${(y * 100).toFixed(1)}%`);
+          button.style.setProperty('--sim-rx', `${((.5 - y) * 12).toFixed(2)}deg`);
+          button.style.setProperty('--sim-ry', `${((x - .5) * 14).toFixed(2)}deg`);
+        });
+        button.addEventListener('pointerleave', () => {
+          button.style.setProperty('--mx', '50%');
+          button.style.setProperty('--my', '50%');
+          button.style.setProperty('--sim-mx', '50%');
+          button.style.setProperty('--sim-my', '50%');
+          button.style.setProperty('--sim-rx', '0deg');
+          button.style.setProperty('--sim-ry', '0deg');
         });
         slot.appendChild(button);
         window.requestAnimationFrame(() => syncSimCardScale(button));
